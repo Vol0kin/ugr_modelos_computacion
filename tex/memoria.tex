@@ -1,0 +1,131 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{makecell}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage[textwidth=390pt]{geometry}
+
+%Opciones de encabezado y pie de página:
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\rhead{}
+\lfoot{Modelos de Computación}
+\cfoot{}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parskip}{10pt}
+
+\newcommand{\enu}{\textit{Enunciado}}
+\newcommand{\sol}{\textbf{Solución}}
+\newcommand{\noindentsect}{\setlength{\parindent}{0pt}}
+\newcommand{\defaultindent}{\setlength{\parindent}{15pt}}
+
+\begin{document}
+	\pagenumbering{gobble}
+	
+	% Pagina de titulo
+	\begin{titlepage}
+
+		\begin{minipage}{\textwidth}
+
+			\centering
+			\textsc{\Large Modelos de Computación\\[0.2cm]}
+			\textsc{GRADO EN INGENIERÍA INFORMÁTICA}\\[1cm]
+
+			\noindent\rule[-1ex]{\textwidth}{1pt}\\[3.5ex]
+			{\Huge Memoria de prácticas\\}
+			\noindent\rule[-1ex]{\textwidth}{2pt}\\[3.5ex]
+			%{\large\bfseries Ejercicio 5}
+		\end{minipage}
+
+		\vspace{1.5cm}
+		
+		\begin{minipage}{\textwidth}
+			\centering
+
+			\textbf{Autor}\\ {Vladislav Nikolov Vasilev}\\[2.5ex]
+
+			\vspace{1cm}
+			\textsc{Escuela Técnica Superior de Ingenierías Informática y de Telecomunicación}\\
+			\vspace{1cm}
+			\textsc{Curso 2018-2019}
+		\end{minipage}
+	\end{titlepage}
+	
+	% Indice
+	\pagenumbering{arabic}
+	\tableofcontents
+	\newpage
+	
+	\section{Prácticas}
+	
+	\subsection{Práctica 1}
+	
+		\subsubsection{Ejercicio 1}
+		\enu. Calcula una gramática libre de contexto que genere el lenguaje  
+		$L = \lbrace a^n b^m c^m d^{2n}$ 
+		tal que 
+		$ n, m \geq 0 \rbrace$. \par
+		
+		\sol
+		
+		\subsubsection{Ejercicio 2}
+		\enu. Describir una gramática que genere los números decimales escritos con el formato
+		[signo][cifra][punto][cifra]. Por ejemplo, +3.45433, -453.23344, ...\par
+
+		\sol
+		
+		 
+		
+		\subsubsection{Ejercicio 3}
+		\enu. Calcula una gramática libre de contexto que genere el lenguaje
+		$L = \lbrace 0^i 1^j 2^k$
+		tal que
+		$i \neq j$ o $j \neq k \rbrace$. \par
+		
+		\sol
+		
+		\subsubsection{Ejercicio 4}
+		\enu. Una empresa de videojuegos ``\textit{The fantastic platform}" están planteando diseñar
+		una gramática capaz de generar niveles de un juego de plataformas, cada uno de los niveles
+		siguiendo las siguientes restricciones:
+		
+		\begin{itemize}[noitemsep]
+			\item Hay 2 grupos de enemigos: grupos grandes (\textit{g}) y grupos pequeños (\textit{p}).
+			\item Hay 2 tipos de monstruos: fuertes (\textit{f}) y débiles (\textit{d}).
+			\item Los grupos grandes de enemigos tienen, al menos, 1 monstruo fuerte y 1 débil.
+				Y los 2 primeros monstruos pueden ir en cualquier orden. A partir del tercer
+				monstruo, irán primero los débiles y después los fuertes.
+			\item Los grupos pequeños tienen como mucho 1 monstruo fuerte.
+			\item Al final de cada nivel habrá una sala de recompensas (\textit{x}).
+		\end{itemize}
+	Por ejemplo, la cadena terminal “\textit{gfddddfffpdddfx}” representa que el nivel tiene
+	(\textit{gfddddfff}) un grupo grande con un monstruo fuerte, 4 débiles y otros 3 fuertes; 
+	después tiene (\textit{pddddf}) un grupo pequeño con 3 débiles y uno fuerte.\\
+	
+	\noindentsect
+	Elaborar una gramática que genere estos niveles con sus restricciones. Cada palabra del 
+	lenguaje es un solo nivel. ¿A qué tipo de gramática dentro de la jerarquía de Chomsky 
+	pertenece la gramática diseñada?\\
+	
+	¿Sería posible diseñar una gramática de tipo 3 para dicho problema?\par
+	
+	\defaultindent
+	\sol
+	
+	\newpage
+	\subsection{Práctica 2}
+	
+	\newpage
+	\subsection{Práctica 3}
+	
+	\newpage
+	\section{Ejercicios voluntarios}
+\end{document}
