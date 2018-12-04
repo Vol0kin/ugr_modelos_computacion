@@ -21,6 +21,7 @@
 \renewcommand{\footrulewidth}{0.4pt}
 
 \setlength{\parskip}{10pt}
+\setlength{\parindent}{0pt}
 
 \newcommand{\enu}{\textit{Enunciado}}
 \newcommand{\sol}{\textbf{Solución}}
@@ -74,15 +75,68 @@
 		tal que 
 		$ n, m \geq 0 \rbrace$. \par
 		
-		\sol
+		\sol \par
+		
+		
+		Se define la gramática como una cuádrupla con la forma $G = (V, T, P, S)$, siendo \textit{V} el conjunto
+		de variables, \textit{T} el conjunto de elementos terminales, \textit{P} las reglas de producción y
+		\textit{S} el símbolo inicial. Se puede definir cada uno de los conjuntos de la siguiente forma: \par
+		\[V = \lbrace S, X, Y \rbrace\]
+		\[T = \lbrace a, b, c, d \rbrace\]
+		\[P = \lbrace S \rightarrow aXdd \; | \; bYc \; | \; \varepsilon, 
+			   \; X \rightarrow aXdd \; | \; bYc \; | \; add \; | \; \varepsilon,
+			   \; Y \rightarrow bYc \; | \; bc \; | \; \varepsilon \rbrace
+		\]
+		\[S = \lbrace S \rbrace \]
+		\par
+		
+		Ésta es una gramática de \textbf{tipo 2}, ya que a la izquierda aparce una variable sola, sin símbolos
+		terminales, y a la derecha aparece la variable con símbolos terminales tanto por la derecha como por la
+		izquierda, impidiendo por tanto que sea regular por la izquierda o por la derecha. \par
+		
+		Con ésta gramática, primero se escoge si se van a empezar a generar una \textit{a} con la secuencia
+		\textit{dd} al final, o si directamente se comenzará a generar la secuencia \textit{b} seguida de
+		\textit{c}. Si se escoge la primera opción, se ponen tantas \textit{a} al principio y \textit{dd} al
+		final como sea necesario, y después se puede escoger si se sigue con las \textit{b} y \textit{c}, o
+		si se termina sin poner ninguno de los símbolos anteriores. Si se decide comenzar a poner \textit{b}
+		y \textit{c} desde el principio o después de poner todas las \textit{a} y \textit{dd} que se quieran,
+		se ponen todas las \textit{b} y \textit{c} que se quieran, hasta que se decida terminar la secuencia.
+		\par
+		
+		Gracias a las reglas de producción se pueden satisfacer todas las restricciones del lenguaje, ya que
+		por cada  \textit{a} se genera \textit{dd}, y por cada \textit{b} se genera \textit{c}. Además, se puede
+		aceptar la cadena vacía o que alguna de las partes no esté.
 		
 		\subsubsection{Ejercicio 2}
 		\enu. Describir una gramática que genere los números decimales escritos con el formato
 		[signo][cifra][punto][cifra]. Por ejemplo, +3.45433, -453.23344, ...\par
 
-		\sol
+		\sol \par
+		La solución más sencilla que se puede ofrecer a este problema consiste en utilizar una gramática
+		libre de contexto, como se mostrará a continuación. No obstante, el problema también es resoluble
+		mediante una gramática regular, aumentanto sin embargo el número de producciones y de variables
+		necesarias. \par
 		
-		 
+		Definimos la gramática como una cuádrupla con la forma $G = (V, T, P, S)$, siendo \textit{V} el conjunto
+		de variables, \textit{T} el conjunto de elementos terminales, \textit{P} las reglas de producción y
+		\textit{S} el símbolo inicial. Se puede definir cada uno de los conjuntos de la siguiente forma: \par
+		
+		\[V = \lbrace S, X \rbrace \]
+		\[T = \lbrace 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ., +, -\rbrace \]
+		\[P = \left\{\begin{array}{c}
+    			S \rightarrow +X.X \; | \; -X.X \\
+    			X \rightarrow 0X \; | \; 1X \; | \; 2X \; | \; 3X \; | \; 4X \; | \; 5X \; | \;
+    			6X \; | \; 7X \; | \; 8X \; | \; 9X \; | \\ 
+    			0 \; | \; 1 \; | \; 2 \; | \; 3 \; | \; 4 \; | \; 5 \; | \; 6 \; | \;
+    			7 \; | \; 8 \; | \; 9
+  			\end{array}\right\}
+		\]
+		\[S = \lbrace S \rbrace \]
+		
+		Primero se genera el signo y el punto, pudiendo escoger si el número es positivo o negativo. Después,
+		en la parte entera y decimal se van generando números en el rango $[0, 9]$, pudiendo escoger cuál es
+		el siguiente número o cuando terminar de insertar números.
+				 
 		
 		\subsubsection{Ejercicio 3}
 		\enu. Calcula una gramática libre de contexto que genere el lenguaje
@@ -90,7 +144,7 @@
 		tal que
 		$i \neq j$ o $j \neq k \rbrace$. \par
 		
-		\sol
+		\sol \par
 		
 		\subsubsection{Ejercicio 4}
 		\enu. Una empresa de videojuegos ``\textit{The fantastic platform}" están planteando diseñar
@@ -108,24 +162,22 @@
 			\item Al final de cada nivel habrá una sala de recompensas (\textit{x}).
 		\end{itemize}
 	
-	% Se hace una seccion sin indentar y con un tamaño de letra pequeño
+	% Se hace una seccion con un tamaño de letra pequeño
 	\footnotesize
-	\noindentsect
 	
 	Por ejemplo, la cadena terminal “\textit{gfddddfffpdddfx}” representa que el nivel tiene
 	(\textit{gfddddfff}) un grupo grande con un monstruo fuerte, 4 débiles y otros 3 fuertes; 
-	después tiene (\textit{pddddf}) un grupo pequeño con 3 débiles y uno fuerte.\\
+	después tiene (\textit{pddddf}) un grupo pequeño con 3 débiles y uno fuerte. \par
 	
 	% Se restaura el tamaño de la letra al especificado en documentclass
 	\normalsize	
 	Elaborar una gramática que genere estos niveles con sus restricciones. Cada palabra del 
 	lenguaje es un solo nivel. ¿A qué tipo de gramática dentro de la jerarquía de Chomsky 
-	pertenece la gramática diseñada?\\
+	pertenece la gramática diseñada? \par
 	
 	¿Sería posible diseñar una gramática de tipo 3 para dicho problema?\par
 	
-	\defaultindent
-	\sol
+	\sol \par
 	
 	\newpage
 	\subsection{Práctica 2}
