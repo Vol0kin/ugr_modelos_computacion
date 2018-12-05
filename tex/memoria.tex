@@ -146,6 +146,53 @@
 		
 		\sol \par
 		
+		Definimos la gramática como una cuádrupla con la forma $G = (V, T, P, S)$, siendo \textit{V} el conjunto
+		de variables, \textit{T} el conjunto de elementos terminales, \textit{P} las reglas de producción y
+		\textit{S} el símbolo inicial. Se puede definir cada uno de los conjuntos de la siguiente forma: \par
+		
+		\[V = \lbrace S, X, Y, Z, P, R, A, B, M, K, U, D, N, L, C, Q \rbrace \]
+		\[T = \lbrace 0, 1, 2 \rbrace \]
+		\[P = \left\{
+		\begin{array}{c}
+			S \rightarrow 0X1 \; | \; 0Y2 \; | \; 1Z2 \; | \; 0A1P2 \; | \; 0R1B2, \;
+			X \rightarrow 0X \; | \; X1 \; | \; \varepsilon \\
+			Y \rightarrow 0Y \; | \; Y2 \; | \; \varepsilon, \;
+			Z \rightarrow 1Z \; | \; Z2 \; | \; \varepsilon, \;
+			P \rightarrow P2 \; | \; \varepsilon, \;
+			R \rightarrow 0R \; | \; \varepsilon, \\
+			A \rightarrow 0M \; | \; N1, \;
+			M \rightarrow OMU \; | \; \varepsilon, \;
+			U \rightarrow 1 \; | \; \varepsilon, \;
+			N \rightarrow CN1 \; | \; \varepsilon, \;
+			C \rightarrow 0 \; | \; \varepsilon, \\
+			B \rightarrow 1K \; | \; L2, \;
+			K \rightarrow 1KD \; | \; \varepsilon, \;
+			D \rightarrow 2 \; | \; \varepsilon, \;
+			L \rightarrow QL2 \; | \; \varepsilon, \;
+			Q \rightarrow 1 \; | \; \varepsilon
+		\end{array}
+		\right\}\]
+		\[S = \lbrace S \rbrace \]
+		
+		Ya que hay muchas reglas y puede no llegar a quedar claro para qué es cada una, vamos a ir 
+		comentándolas para que no queden dudas sobre el por qué de cada una de ellas. \par
+		
+		La primera de ellas, $S \rightarrow 0X1$, indica que solo se van a producir los símbolos
+		0 y 1, dándose por tanto la condición $j \neq k$, ya que no hay ningún símbolo 2. $X$ puede ser
+		sustituido por tantos 0 o 1 como se desee, lo cuál corresponde a la producción $X \rightarrow 0X \;
+		| \; X1 \; | \; \varepsilon$. \par
+		
+		Después tenemos la producción $S \rightarrow 0Y2$, la cuál es parecida a la anterior, solo que
+		esta vez se producen solo los símbolos 0 y 2, satisfaciendo por tanto las condiciones $i \neq j$
+		y $j \neq k$ simultáneamente. La variable $Y$ puede ser sustituida por tantos 0 o 2 como se desee,
+		lo cuál se corresponde con la producción $Y \rightarrow 0Y \; | \; Y2 \; | \; \varepsilon$. \par
+		
+		La regla $S \rightarrow 1Z2$ permite producir los símbolos 1 y 2. En este caso, esta regla permite
+		satisfacer la restricción $i \neq j$, ya que no se produce ningún símbolo 0. La variable $Z$ puede
+		ser sustituida por tantos 1 y 2 como se desee. Ésto se corresponde con la producción $Z \rightarrow 1Z
+		\; | \; Z2 \; | \; \varepsilon$. \par
+		
+		
 		\subsubsection{Ejercicio 4}
 		\enu. Una empresa de videojuegos ``\textit{The fantastic platform}" están planteando diseñar
 		una gramática capaz de generar niveles de un juego de plataformas, cada uno de los niveles
@@ -162,22 +209,22 @@
 			\item Al final de cada nivel habrá una sala de recompensas (\textit{x}).
 		\end{itemize}
 	
-	% Se hace una seccion con un tamaño de letra pequeño
-	\footnotesize
+		% Se hace una seccion con un tamaño de letra pequeño
+		\footnotesize
 	
-	Por ejemplo, la cadena terminal “\textit{gfddddfffpdddfx}” representa que el nivel tiene
-	(\textit{gfddddfff}) un grupo grande con un monstruo fuerte, 4 débiles y otros 3 fuertes; 
-	después tiene (\textit{pddddf}) un grupo pequeño con 3 débiles y uno fuerte. \par
+		Por ejemplo, la cadena terminal “\textit{gfddddfffpdddfx}” representa que el nivel tiene
+		(\textit{gfddddfff}) un grupo grande con un monstruo fuerte, 4 débiles y otros 3 fuertes; 
+		después tiene (\textit{pddddf}) un grupo pequeño con 3 débiles y uno fuerte. \par
 	
-	% Se restaura el tamaño de la letra al especificado en documentclass
-	\normalsize	
-	Elaborar una gramática que genere estos niveles con sus restricciones. Cada palabra del 
-	lenguaje es un solo nivel. ¿A qué tipo de gramática dentro de la jerarquía de Chomsky 
-	pertenece la gramática diseñada? \par
+		% Se restaura el tamaño de la letra al especificado en documentclass
+		\normalsize	
+		Elaborar una gramática que genere estos niveles con sus restricciones. Cada palabra del 
+		lenguaje es un solo nivel. ¿A qué tipo de gramática dentro de la jerarquía de Chomsky 
+		pertenece la gramática diseñada? \par
 	
-	¿Sería posible diseñar una gramática de tipo 3 para dicho problema?\par
+		¿Sería posible diseñar una gramática de tipo 3 para dicho problema?\par
 	
-	\sol \par
+		\sol \par
 	
 	\newpage
 	\subsection{Práctica 2}
