@@ -114,7 +114,7 @@
 		\sol \par
 		La solución más sencilla que se puede ofrecer a este problema consiste en utilizar una gramática
 		libre de contexto, como se mostrará a continuación. No obstante, el problema también es resoluble
-		mediante una gramática regular, aumentanto sin embargo el número de producciones y de variables
+		mediante una gramática regular, aumentando sin embargo el número de producciones y de variables
 		necesarias. \par
 		
 		Definimos la gramática como una cuádrupla con la forma $G = (V, T, P, S)$, siendo \textit{V} el conjunto
@@ -192,6 +192,41 @@
 		ser sustituida por tantos 1 y 2 como se desee. Ésto se corresponde con la producción $Z \rightarrow 1Z
 		\; | \; Z2 \; | \; \varepsilon$. \par
 		
+		La regla $S \rightarrow 0A1P2$ permite producir los símbolos 0, 1 y 2, cumpliendo sin embargo la
+		restricción $i \neq j$, introduciendo la desigualdad por tanto en la parte de los 0 y los 1, es decir,
+		obligando que el número de 0 y de 1 sea diferente y permitiendo producir tantos 2 como se desee. La
+		variable A se puede sustituir con la regla $A \rightarrow 0M \; | \; N1$, escogiendo si se quieren más 0
+		que 1 (se escogería $OM$) o más 1 que 0 (se escogería en este caso $N1$). Al haber escogido estas reglas,
+		se asegura que como mínimo hay un símbolo más de ese tipo. La variable $M$ puede ser sustituída por $M
+		\rightarrow OMU \; | \; \varepsilon$, permitiendo poner tantos 0 como se deseen y poniendo por cada uno
+		una variable $U$, la cuál puede ser sustituida luego por $U \rightarrow 1 \; | \; \varepsilon$, poniendo
+		o no tantos 1 como 	$U$ haya. Hay que tener en cuenta que el número de 1 será siempre menor que
+		el número de 0, ya que al principio, con $A \rightarrow 0M$ se puso un 0 extra, y como la regla $M
+		\rightarrow OMU$ produce una variable que pueda ser sustituida por 1 por cada 0 nuevo que se coloca, se
+		asegura que se cumplirá la	desigualdad $i \neq j$ como se mencionó anteriormente, siendo en este caso $i
+		> j$ ya que $num(1) \leq num(0) - 1$. Algo similar ocurre con la regla $A \rightarrow N1$, ya que permite
+		producir más 1 que 0 de la misma forma que antes. Primero se introduce un 1 extra y después se sustituye
+		la variable $N$ por $N \rightarrow CN1 \; | \; \varepsilon$, permitiendo poner tantos 1 como se deseen y
+		permitiendo poner un 0 por cada nuevo 1 que se añade (lo cuál se corresponde a la regla $C \rightarrow
+		0 \; | \; \varepsilon$). Aquí ocurre lo mismo que en el caso anterior, ya que cumplirá la restricción $i
+		\neq j$ verificando que $i < j$, debido a que $num(0) \leq num(1) - 1$. \par
+		
+		Finalmente tenemos la regla $S \rightarrow 0R1B2$, la cuál es similar a la anterior mencionada debido
+		a que permite producir los símbolos 0, 1 y 2, satisfaciendo sin embargo la desigualdad $j \neq k$, lo
+		cuál significa que se producen tantos 0 como se deseen, pero el número de 1 y de 2 tiene que ser
+		distinto. La variable $R$ puede ser sustituída por $R \rightarrow 0R \; | \; \varepsilon$, es decir,
+		por tantos 0 como se desee. La variable $B$ puede ser sustituída por $B \rightarrow 1K \; | \; L2$,
+		permitiendo en el primer caso que haya más 1 que 2, y en el segundo caso que haya más 2 que 1.
+		La variable $K$ puede ser sustituida por $K \rightarrow 1KD \; | \; \varepsilon$, poniendo un símbolo
+		1, después otra variable $K$ y finalmente una variable $D$, la cuál puede ser sustituida mediante la
+		regla $D \rightarrow 2 \; | \; \varepsilon$, poniendo como mucho tantos 2 como variables $D$ haya. Con
+		esto se cumple la desigualdad $j \neq k$ ya que se ha puesto un 1 extra al principio, de forma que
+		$j > k$ y $num(2) \leq num(1) - 1$. En el caso de querer más 2 que 1, se escogería $B \rightarrow L2$,
+		sustituyendo luego la variable $L$ por $L \rightarrow QL2 \; | \; \varepsilon$, poniendo una variable
+		$Q$, una variable $L$ y un 2. La variable $Q$ sería sustituida luego mediante la regla $Q \rightarrow 1
+		\; | \; \varepsilon$, permitiendo poner un o ningún 1 por cada variable $Q$. En este caso se cumpliría
+		que $j \neq k$ ya que $j < k$ porque se cumple que $num(1) \leq num(2) - 1$.
+		
 		
 		\subsubsection{Ejercicio 4}
 		\enu. Una empresa de videojuegos ``\textit{The fantastic platform}" están planteando diseñar
@@ -222,15 +257,113 @@
 		lenguaje es un solo nivel. ¿A qué tipo de gramática dentro de la jerarquía de Chomsky 
 		pertenece la gramática diseñada? \par
 	
-		¿Sería posible diseñar una gramática de tipo 3 para dicho problema?\par
+		¿Sería posible diseñar una gramática de tipo 3 para dicho problema? \par
 	
 		\sol \par
+		
+		Definimos la gramática como una cuádrupla con la forma $G = (V, T, P, S)$, siendo \textit{V} el conjunto
+		de variables, \textit{T} el conjunto de elementos terminales, \textit{P} las reglas de producción y
+		\textit{S} el símbolo inicial. Se puede definir cada uno de los conjuntos de la siguiente forma: \par
+		
+		\[V = \lbrace S, G, X, Y, Z, V, R, P, B \rbrace \]
+		\[T = \lbrace g, p, f, d, x \rbrace \]
+		\[P = \left\{
+		\begin{array}{c}
+		S \rightarrow gGx \; | \; pPx, \;
+		G \rightarrow ddX \; | \; dfY \; | \; fdY \; | \; ffZ, \;
+		X \rightarrow dX \; | \; fR, \\
+		Y \rightarrow X \; | \; V \; | \; R \; | \; gG \; | \; pP \; | \; \varepsilon, \;
+		Z \rightarrow dX \; | \; dV, \;
+		V \rightarrow dV \; | \; gG \; | \; pP \; | \; \varepsilon, \\
+		R \rightarrow fR \; | \; gG \; | \; pP \; | \; \varepsilon, \;
+		P \rightarrow dP \; | \; dB \; | \; fB, \;
+		B \rightarrow dB \; | \; gG \; | \; pP \; | \; \varepsilon		
+		\end{array}
+		\right\}		
+		\]
+		\[S = \lbrace S \rbrace \]
+		
+		La gramática es de \textbf{tipo 2}, ya que a la izquierda aparecen solo variables y a la derecha aparecen
+		variables con símbolos terminales tanto por la derecha como por la izquierda o sin símbolos terminales, 
+		impidiendo por tanto que sea regular, tanto por la derecha o regular por la izquierda. \par
+		
+		Una vez dicho esto, se va a proceder a explicar cómo funcionan las reglas de producción. Con $S \rightarrow gGx
+		\; | \; pPx$ se escoge con qué grupo empezar primero: si uno grande ($gGx$) o uno pequeño ($pPx$). \par
+		
+		Si se escoge empezar con un grupo grande, como da igual en qué orden están los dos primeros enemigos, se puede
+		sustituir la variable $G$ mediante la regla $G \rightarrow ddX \; | \; dfY \; | \; fdY \; | \; ffZ$. Si con la
+		regla anterior se han producido dos enemigos débiles, se sustituye la variable $X$ mediante la regla X 
+		$\rightarrow dX \; | \; fR$, que permite poner primero todos los enemigos débiles que se quieran y poner uno
+		fuerte al final. Después de poner el fuerte, la variable $R$ se puede sustituir mediante la regla $R \rightarrow
+		fR \; | \; gG \; | \; pP \; | \; \varepsilon$, que permite poner tantos enemigos fuertes como se quieran, y
+		después un grupo grande, uno pequeño o terminar de poner grupos de enemigos. Si por el contrario, al principio
+		del grupo grande se escogen poner dos enemigos fuertes, entonces se tiene que poner como mínimo un enemigo
+		débil. Esto se hace a través de la variable $Z$, que se sustituye mediante la regla $Z \rightarrow dX \; | \;
+		dV$, que pone un enemigo débil y permite escoger si seguir con la variable $X$ para poner enemigos débiles o
+		fuertes, o seguir con la variable $V$, que se sustituye mediante la regla $V \rightarrow dV \; | \; gG \; | \;
+		pP \; | \; \varepsilon$ y permite poner tantos enemigos débiles como se quieran o poner un nuevo grupo grande,
+		pequeño o terminar de poner grupos. Si por el contrario se escoge poner un enemigo fuerte y uno débil, como ya
+		se cumple la restricción del grupo grande, se puede sustituir la variable $Y$ mediante la regla $Y \rightarrow X
+		\; | \; V \; | \; R \; | \; gG \; | \; pP \; | \; \varepsilon$, que permite poner enemigos fuertes y débiles,
+		solo fuertes, solo débiles, poner un grupo grande, uno pequeño o terminar de insertar grupos.
+		
+		Si en cambio se escoge empezar con un grupo pequeño, la variable $P$ puede ser sustituida mediante la regla
+		$P \rightarrow dP \; | \; dB \; | \; fB$, que permite poner tantos enemigos débiles como se quieran y se puede
+		escoger si se quiere un enemigo fuerte, o si por el contrario solo se van a producir débiles. En todo caso, si
+		se produce un enemigo fuerte o si no se decide producir se escoge el camino de la variable $B$, la cuál puede
+		ser sustituida con la regla $B \rightarrow dB \; | \; gG \; | \; pP \; | \; \varepsilon$, permitiendo de nuevo
+		poner cuantos enemigos débiles se desee, y después poner un grupo grande, uno pequeño o terminar de insertar
+		grupos de enemigos. \par
+		
+		Como se puede comprobar, estas reglas permiten crear niveles de forma flexible, ya que se pueden combinar los
+		grupos grandes y los pequeños en el orden que se quiera. Además, también permite generar los enemigos de una
+		forma versátil, permitiendo muchas combinaciones posibles. \par
+		
+		Respecto a la segunda pregunta, es posible diseñar una gramática de tipo 3 para este problema. Esto se debe
+		al hecho de que, aunque la gramática obtenida inicialmente sea de tipo de 2, no se garantiza que el lenguaje
+		sea de tipo 2, si no que también puede ser de tipo 3. Para ello,definimos la gramática como una cuádrupla 
+		$G = (V, T, P, S)$, donde $V$ son las variables, $T$ los símbolos terminales, $P$ las reglas de producción
+		y $S$ el símbolo inicial. Cada uno de los conjuntos tendría la siguiente forma: \par
+		
+		\[V = \lbrace S, G, X, Y, Z, V, R, P, B \rbrace \]
+		\[T = \lbrace g, p, f, d, x \rbrace \]
+		\[P = \left\{
+		\begin{array}{c}
+		S \rightarrow gG \; | \; pP, \;
+		G \rightarrow ddX \; | \; dfY \; | \; fdY \; | \; ffZ, \;
+		X \rightarrow dX \; | \; fR, \\
+		Y \rightarrow dX \; | \; dV \; | \; fR \; | \; gG \; | \; pP \; | \; x, \;
+		Z \rightarrow dX \; | \; dV, \;
+		V \rightarrow dV \; | \; gG \; | \; pP \; | \; x, \\
+		R \rightarrow fR \; | \; gG \; | \; pP \; | \; x, \;
+		P \rightarrow dP \; | \; dB \; | \; fB, \;
+		B \rightarrow dB \; | \; gG \; | \; pP \; | \; x	
+		\end{array}
+		\right\}		
+		\]
+		\[S = \lbrace S \rbrace \]
+		
+		Como se puede comprobar fácilmente, esta gramática es de \textbf{tipo 3}, ya que a la izquierda aparece
+		la variable sola y a la derecha aparece, o bien un símbolo terminal, o bien uno o más símbolos terminales
+		acompañados de una variable a la derecha. Por tanto, se trata de una gramática regular por la derecha. \par
+		
+		Se puede comprobar fácilmente que esta gramática produce las mismas palabras que la anterior. Las diferencias
+		son que el símbolo de recompensa de nivel $x$ se genera cuando no se quieren generar más grupos de enemigos
+		en vez de al principio como se hacía antes. Esto también implica que todos los $\varepsilon$ se han sustituido
+		por el símbolo $x$. Adicionalmente, para que el lenguaje fuese regular por la derecha, a las producciones de
+		$Y$ que anteriormente solo implicaban un cambio de variable se les ha añadido un símbolo terminal
+		que además cumple las restricciones impuestas por el problema (una $d$ para las variables $X$ y $V$ y una $f$
+		para la variable $R$).
+		
 	
 	\newpage
 	\subsection{Práctica 2}
 	
 	\newpage
 	\subsection{Práctica 3}
+	
+	\newpage
+	\subsection{Práctica 4}
 	
 	\newpage
 	\section{Ejercicios voluntarios}
