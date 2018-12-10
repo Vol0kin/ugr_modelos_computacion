@@ -17,11 +17,25 @@ entero			\-?{digito}+
 numero			{entero}(\.{digito}+)?
 delimitador		"'"[^\t\n]+"'"
 cadena			("'"({letra}|{digito}|{espacio})*"'")
-variable		({letra}|{digito})+
+variable		({letra}|{digito}|_)+
+crear			"crear "{variable}(" "({numero}|{cadena}|{espacio})+)?
+longitud		"longitud "{variable}
+imprimir		"imprimir "{variable}
+recorrer		"recorrer "{variable}(" "{delimitador})?
+insertar		"insertar "{variable}" "({cadena}|{numero})
+borrar			"borrar "{variable}" "({cadena}|{numero})
+obtener			"obtener "{variable}" "{entero}
+copiar			"copiar "{variable}" "{variable}
+concatenar		"concatenar "{variable}" "{variable}" "{variable}
+ordenar			"ordenar "{variable}" reves"?
+suma			{variable}" mas "{variable}(" mas "{variable})*
+operador		"igual"|"diferente"|"menor"|"menor igual"|"mayor"|"mayor igual"
+expresion		{longitud}|{suma}|{obtener}|{variable}|{ordenar}
+comparar		"comparar "{expresion}" "{operador}" "{expresion}
 
 %%
 
-"crear "{variable}(" "({numero}|{cadena}|{espacio})+)? 				{procesado = yytext + 6;
+{crear}																{procesado = yytext + 6;
 																		char * lista = malloc(strlen(procesado));
 																		elem = malloc(strlen(procesado) * 2);
 																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
@@ -45,9 +59,9 @@ variable		({letra}|{digito})+
 																			}
 																		}
 																		printf("%s = [%s]", lista, elem);}
-"longitud "{variable}												{procesado = yytext + 9; printf("len(%s)", procesado);}
-"imprimir "{variable}												{procesado = yytext + 9; printf("print(%s)", procesado);}
-"recorrer "{variable}(" "{delimitador})?							{procesado = yytext + 9;
+{longitud}														{procesado = yytext + 9; printf("len(%s)", procesado);}
+{imprimir}														{procesado = yytext + 9; printf("print(%s)", procesado);}
+{recorrer}														{procesado = yytext + 9;
 																		char * lista = malloc(strlen(procesado));
 																		char * delim;
 																		int usar_delim = 0;
@@ -62,28 +76,28 @@ variable		({letra}|{digito})+
 																			printf(", end = %s", delim);
 																		printf(")");
 																	}
-"insertar "{variable}" "({cadena}|{numero})							{procesado = yytext + 9;
+{insertar}															{procesado = yytext + 9;
 																		char * lista = malloc(strlen(procesado));
 																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
 																			lista[i] = procesado[i];
 																		procesado += i + 1;
 																		elem = procesado;
 																		printf("%s.append(%s)", lista, elem);}
-"borrar "{variable}" "({cadena}|{numero})							{procesado = yytext + 7;
+{borrar}															{procesado = yytext + 7;
 																		char *lista = malloc(strlen(procesado));
 																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
 																			lista[i] = procesado[i];
 																		procesado += i + 1;
 																		elem = procesado;
 																		printf("%s.remove(%s)", lista, elem);}
-"obtener "{variable}" "{entero}										{procesado = yytext; procesado += 8;
+{obtener}															{procesado = yytext; procesado += 8;
 																		char *lista = malloc(strlen(procesado));
 																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
 																			lista[i] = procesado[i];
 																		procesado += i + 1;
 																		elem = procesado;
 																		printf("print(%s[%s])", lista, elem);}
-"copiar "{variable}" "{variable}									{procesado = yytext + 7;
+{copiar}															{procesado = yytext + 7;
 																		char *orig = malloc(strlen(procesado));
 																		char *dest = malloc(strlen(procesado));
 																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
@@ -91,7 +105,7 @@ variable		({letra}|{digito})+
 																		procesado += i + 1;
 																		dest = procesado;
 																		printf("%s = %s", dest, orig);}
-"concatenar "{variable}" "{variable}" "{variable}					{procesado = yytext + 11;
+{concatenar}														{procesado = yytext + 11;
 																		char *l1 = malloc(strlen(procesado));
 																		char *l2 = malloc(strlen(procesado));
 																		char *dest = malloc(strlen(procesado));
@@ -103,6 +117,8 @@ variable		({letra}|{digito})+
 																		procesado += i + 1;
 																		dest = procesado;
 																		printf("%s = %s + %s", dest, l1, l2);}
+{ordenar}															{printf("%s", yytext);}
+{suma}															{printf("%s", yytext);}
 .																	{}
 
 %%
