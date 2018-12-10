@@ -1,0 +1,10 @@
+crear lista1 'asds'        'prueba'        'F'
+copiar lista1 listacopia
+recorrer lista1
+recorrer listacopia ' '
+crear lista2 1 1.1 -1 -1.1
+concatenar lista1 lista2 lista3
+imprimir lista3
+recorrer lista3 '_'
+insertar lista2 10
+obtener lista2 4

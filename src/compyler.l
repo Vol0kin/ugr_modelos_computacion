@@ -15,34 +15,71 @@ digito			[0-9]
 espacio			[ ]
 entero			\-?{digito}+
 numero			{entero}(\.{digito}+)?
+delimitador		"'"[^\t\n]+"'"
 cadena			("'"({letra}|{digito}|{espacio})*"'")
 variable		({letra}|{digito})+
 
 %%
 
-{numero}															{printf("Numero: %s", yytext);}
-"crear "{variable}("("({numero}|{cadena}|{espacio})+")")? 			{procesado = yytext; procesado += 6; printf("%s = []", procesado);}
-"longitud "{variable}												{procesado = yytext; procesado += 9; printf("len(%s)", procesado);}
-"imprimir "{variable}												{procesado = yytext; procesado += 9; printf("print(%s)", procesado);}
-"recorrer "{variable}												{procesado = yytext; procesado += 9; printf("for item in %s:\n    print(item)", procesado);}
-"insertar "{variable}" "({cadena}|{numero})							{procesado = yytext; procesado += 9; printf("%s.append()", procesado);}
+"crear "{variable}(" "({numero}|{cadena}|{espacio})+)? 				{procesado = yytext + 6;
+																		char * lista = malloc(strlen(procesado));
+																		elem = malloc(strlen(procesado) * 2);
+																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		procesado += i + 1;
+																		j = 0;
+																		int cambiar_espacio_coma = 0;
+																		for (i = 0; i < strlen(procesado); i++) {
+																			if (procesado[i] == ' ') {
+																				if (cambiar_espacio_coma != 0) {
+																					elem[j] = ',';
+																					j++;
+																					elem[j] = ' ';
+																					j++;
+																					cambiar_espacio_coma = 0;
+																				}
+																			} else {
+																				elem[j] = procesado[i];
+																				j++;
+																				cambiar_espacio_coma = 1;
+																			}
+																		}
+																		printf("%s = [%s]", lista, elem);}
+"longitud "{variable}												{procesado = yytext + 9; printf("len(%s)", procesado);}
+"imprimir "{variable}												{procesado = yytext + 9; printf("print(%s)", procesado);}
+"recorrer "{variable}(" "{delimitador})?							{procesado = yytext + 9;
+																		char * lista = malloc(strlen(procesado));
+																		char * delim;
+																		int usar_delim = 0;
+																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		if (strlen(procesado) >= i + 1)
+																			usar_delim = 1;
+																		procesado += i + 1;
+																		delim = procesado;
+																		printf("for item in %s:\n    print(item", lista);
+																		if (usar_delim)
+																			printf(", end = %s", delim);
+																		printf(")");
+																	}
+"insertar "{variable}" "({cadena}|{numero})							{procesado = yytext + 9;
+																		char * lista = malloc(strlen(procesado));
+																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		procesado += i + 1;
+																		elem = procesado;
+																		printf("%s.append(%s)", lista, elem);}
 "borrar "{variable}" "({cadena}|{numero})							{procesado = yytext + 7;
 																		char *lista = malloc(strlen(procesado));
-																		i = 0;
-																		while (procesado[i] != ' ') {
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
 																			lista[i] = procesado[i];
-																			i++;
-																		}
 																		procesado += i + 1;
 																		elem = procesado;
 																		printf("%s.remove(%s)", lista, elem);}
 "obtener "{variable}" "{entero}										{procesado = yytext; procesado += 8;
 																		char *lista = malloc(strlen(procesado));
-																		i = 0;
-																		while (procesado[i] != ' ') {
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
 																			lista[i] = procesado[i];
-																			i++;
-																		}
 																		procesado += i + 1;
 																		elem = procesado;
 																		printf("print(%s[%s])", lista, elem);}
@@ -66,7 +103,7 @@ variable		({letra}|{digito})+
 																		procesado += i + 1;
 																		dest = procesado;
 																		printf("%s = %s + %s", dest, l1, l2);}
-.							{}
+.																	{}
 
 %%
 
