@@ -8,6 +8,7 @@ char * procesado;
 char * elem;
 int i = 0;
 int j = 0;
+int comparar = 0;
 %}
 
 letra			[a-zA-Z]
@@ -59,7 +60,7 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																			}
 																		}
 																		printf("%s = [%s]", lista, elem);}
-{longitud}															{procesado = yytext + 9; printf("len(%s)", procesado);}
+{longitud}															{procesado = yytext + 9; printf("len(%s)", procesado); if(comparar == 1) printf("hola\n");}
 {imprimir}															{procesado = yytext + 9; printf("print(%s)", procesado);}
 {recorrer}															{procesado = yytext + 9;
 																		char * lista = malloc(strlen(procesado));
@@ -148,6 +149,22 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																			}
 																		}
 																		printf("%s", suma);}
+{comparar}															{comparar = 1; yyless(yyleng - 9);}
+{operador}															{procesado = yytext;
+																		i = 0;
+																		if(procesado[i] == 'i')
+																			printf(" == ");
+																		else if(procesado[i] == 'd')
+																			printf(" != ");
+																		else if(procesado[i] == 'm') {
+																			if(procesado[i+1] == 'e' && yyleng == 5)
+																				printf(" < ");
+																			else if(procesado[i+1] == 'e' && yyleng > 5)
+																				printf(" <= ");
+																			else if(procesado[i+1] == 'a' && yyleng == 5)
+																				printf(" > ");
+																			else
+																				printf(" >= ");}}
 .																	{}
 
 %%
