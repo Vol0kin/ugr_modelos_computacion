@@ -125,27 +125,29 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																			printf("%s.sort(reverse=True)", lista);
 																		else
 																			printf("%s.sort()", lista);}
-{suma}																{procesado = yytext + 0;
-																		char *l1 = malloc(strlen(procesado));
-																		char *l2 = malloc(strlen(procesado));
-																		l1 = procesado;
-																		int primera_vuelta = 0;
-																		int k = 0;
-																		for(i = 0; i < strlen(procesado); i++, j++) {
-																			if(procesado[i] == ' ') {
-																				j = 0;
-																				l1 += i + 5;
-																				k += 5;
-																				if(primera_vuelta == 0) {
-																					printf("%s", l2);
-																					primera_vuelta = 1;
+{suma}																{procesado = yytext;
+																		char * suma = malloc(strlen(procesado));
+																		int salta_palabra = 0;
+																		j = 0;
+																		for(i = 0; i < strlen(procesado); i++) {
+																			if (procesado[i] == ' ') {
+																				salta_palabra = !salta_palabra & 0x1;
+																				if(salta_palabra) {
+																					suma[j] = ' ';
+																					j++;
+																					suma[j] = '+';
+																					j++;
+																					suma[j] = ' ';
+																					j++;
 																				}
-																				else
-																					printf(" + %s", l2);
+																			} else {
+																				if (!salta_palabra) {
+																					suma[j] = procesado[i];
+																					j++;
+																				}
 																			}
-																			l2[j] = l1[k];
-																			k++;
-																		}};
+																		}
+																		printf("%s", suma);}
 .																	{}
 
 %%
