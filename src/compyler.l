@@ -59,9 +59,9 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																			}
 																		}
 																		printf("%s = [%s]", lista, elem);}
-{longitud}														{procesado = yytext + 9; printf("len(%s)", procesado);}
-{imprimir}														{procesado = yytext + 9; printf("print(%s)", procesado);}
-{recorrer}														{procesado = yytext + 9;
+{longitud}															{procesado = yytext + 9; printf("len(%s)", procesado);}
+{imprimir}															{procesado = yytext + 9; printf("print(%s)", procesado);}
+{recorrer}															{procesado = yytext + 9;
 																		char * lista = malloc(strlen(procesado));
 																		char * delim;
 																		int usar_delim = 0;
@@ -117,8 +117,35 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																		procesado += i + 1;
 																		dest = procesado;
 																		printf("%s = %s + %s", dest, l1, l2);}
-{ordenar}															{printf("%s", yytext);}
-{suma}															{printf("%s", yytext);}
+{ordenar}															{procesado = yytext + 8;
+																		char *lista = malloc(strlen(procesado));
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		if (strlen(procesado) >= i + 1)
+																			printf("%s.sort(reverse=True)", lista);
+																		else
+																			printf("%s.sort()", lista);}
+{suma}																{procesado = yytext + 0;
+																		char *l1 = malloc(strlen(procesado));
+																		char *l2 = malloc(strlen(procesado));
+																		l1 = procesado;
+																		int primera_vuelta = 0;
+																		int k = 0;
+																		for(i = 0; i < strlen(procesado); i++, j++) {
+																			if(procesado[i] == ' ') {
+																				j = 0;
+																				l1 += i + 5;
+																				k += 5;
+																				if(primera_vuelta == 0) {
+																					printf("%s", l2);
+																					primera_vuelta = 1;
+																				}
+																				else
+																					printf(" + %s", l2);
+																			}
+																			l2[j] = l1[k];
+																			k++;
+																		}};
 .																	{}
 
 %%
