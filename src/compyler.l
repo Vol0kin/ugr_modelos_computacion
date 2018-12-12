@@ -9,6 +9,7 @@ char * elem;
 int i = 0;
 int j = 0;
 int comparar = 0;
+char * comparacion;
 %}
 
 letra			[a-zA-Z]
@@ -60,7 +61,7 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																			}
 																		}
 																		printf("%s = [%s]", lista, elem);}
-{longitud}															{procesado = yytext + 9; printf("len(%s)", procesado); if(comparar == 1) printf("hola\n");}
+{longitud}															{procesado = yytext + 9; printf("len(%s)", procesado);}
 {imprimir}															{procesado = yytext + 9; printf("print(%s)", procesado);}
 {recorrer}															{procesado = yytext + 9;
 																		char * lista = malloc(strlen(procesado));
@@ -97,7 +98,12 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																			lista[i] = procesado[i];
 																		procesado += i + 1;
 																		elem = procesado;
-																		printf("print(%s[%s])", lista, elem);}
+																		if(comparar > 0) {
+																			printf("%s[%s]", lista, elem);
+																			comparar--;
+																		}
+																		else
+																			printf("print(%s[%s])", lista, elem);}
 {copiar}															{procesado = yytext + 7;
 																		char *orig = malloc(strlen(procesado));
 																		char *dest = malloc(strlen(procesado));
@@ -149,7 +155,7 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																			}
 																		}
 																		printf("%s", suma);}
-{comparar}															{comparar = 1; yyless(yyleng - 9);}
+{comparar}															{comparar = 2; printf("comparacion = "); yyless(9);}
 {operador}															{procesado = yytext;
 																		i = 0;
 																		if(procesado[i] == 'i')
@@ -165,6 +171,7 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																				printf(" > ");
 																			else
 																				printf(" >= ");}}
+{variable}															{printf("%s", yytext);}
 .																	{}
 
 %%
@@ -180,8 +187,8 @@ int main(int argc, char *argv[]) {
 		}
 	} else
 		yyin = stdin;
-
-	yylex();
+	
+	yylex(); 
 
 	return 0;
 }
