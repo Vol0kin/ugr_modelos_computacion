@@ -61,7 +61,10 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																			}
 																		}
 																		printf("%s = [%s]", lista, elem);}
-{longitud}															{procesado = yytext + 9; printf("len(%s)", procesado);}
+{longitud}															{procesado = yytext + 9;
+																		if (comparar > 0)
+																			comparar--;
+																		printf("len(%s)", procesado);}
 {imprimir}															{procesado = yytext + 9; printf("print(%s)", procesado);}
 {recorrer}															{procesado = yytext + 9;
 																		char * lista = malloc(strlen(procesado));
@@ -126,6 +129,8 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																		printf("%s = %s + %s", dest, l1, l2);}
 {ordenar}															{procesado = yytext + 8;
 																		char *lista = malloc(strlen(procesado));
+																		if (comparar > 0)
+																			comparar--;
 																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
 																			lista[i] = procesado[i];
 																		if (strlen(procesado) >= i + 1)
@@ -136,6 +141,9 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																		char * suma = malloc(strlen(procesado));
 																		int salta_palabra = 0;
 																		j = 0;
+																		
+																		if (comparar > 0)
+																			comparar--;
 																		for(i = 0; i < strlen(procesado); i++) {
 																			if (procesado[i] == ' ') {
 																				salta_palabra = !salta_palabra & 0x1;
@@ -171,7 +179,10 @@ comparar		"comparar "{expresion}" "{operador}" "{expresion}
 																				printf(" > ");
 																			else
 																				printf(" >= ");}}
-{variable}															{printf("%s", yytext);}
+{variable}															{if (comparar > 0)
+																			comparar--;
+																	printf("%s", yytext);}
+"mostrar comparacion"												{printf("print(comparacion)");}
 .																	{}
 
 %%
