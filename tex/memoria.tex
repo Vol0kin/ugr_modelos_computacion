@@ -2,12 +2,49 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{graphicx}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}	% Con hidelinks no se muestran los recuadros rojos
 \usepackage{tikz}
 \usepackage{makecell}
 \usepackage{float}
 \usepackage{enumitem}
 \usepackage[textwidth=390pt]{geometry}
+
+%Códigos fuente
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphicx}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ 
+  backgroundcolor=\color{white},   % choose the background color
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=C,                     % the language of the code
+  morekeywords={*,private},        % add more keywords to the set
+  numbers=left,                    % where to put the line-numbers (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If 1, each line si numbered
+  stringstyle=\color{magenta},     % string literal style
+  tabsize=2,                    % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
 
 %Opciones de encabezado y pie de página:
 \usepackage{fancyhdr}
@@ -358,7 +395,273 @@
 	
 	\newpage
 	\subsection{Práctica 2}
-	
+		Esta práctica ha sido realizada con mi compañera Nazaret Román Guerrero. Aquí se incluye la descripción y
+		solución del problema para ambos alumnos. \par
+		
+		\subsubsection{Descripción del problema}
+		El problema que se ha decidido abordar consiste en la creación de un programa capaz de traducir el lenguaje
+		natural en código ejecutable en Python. Ya que de por sí el problema sería demasiado grande y complejo, lo
+		hemos restringido a crear un traductor que permite convertir expresiones simples relacionadas con el manejo de
+		listas en lenguaje natural a Python. \par
+		Las funcionalidades que hemos decidido implementar son:
+		\begin{itemize}
+			\item Creación de listas, tanto vacías como con elementos.
+			\item Inserción de elementos en las listas.
+			\item Borrado de elementos de una lista.
+			\item Obtención de un elemento en una posición de una lista.
+			\item Imprimir una lista.
+			\item Recorrer una lista, usando el delimitador por defecto o escogiendo uno que se desee.
+			\item Obtener la longitud de una lista.
+			\item Ordenar una lista, permitiendo que se ordene al revés.
+			\item Copiar una lista en otra.
+			\item Concatenar dos listas en una nueva o una ya existente.
+			\item Comparar listas, permitiendo poner como expresión sumas de \textit{n} listas, la longitud de una
+			lista, 	obtener el elemento de una lista, ordenar listas o comparar directamente listas entre sí. Los
+			operadores que soporta la traducción son igual (==), diferente (!=), menor $(<)$, mayor $(>)$,
+			menor o igual $(\leq)$ y mayor o igual $(\geq)$.
+			\item Mostrar el resultado de la comparación.
+		\end{itemize}
+		
+		Los elementos que se pueden insertar en listas son números enteros y reales (los reales tienen una parte entera
+		separada por el símbolo gráfico . de la parte decimal) y cadenas de caracteres (encerradas entre comillas
+		simples, con espacios y sin restricciones de longitud).
+		
+		\subsubsection{Resolución del problema}
+		Para resolver el problema hemos utilizado la herramienta \textit{Flex}. Hemos creado un programa escrito en C
+		que permite procesar símbolos de entrada y obtener la traducción en Python correspondiente. \par
+		
+		Se procede a mostrar ahora el codigo:
+		
+		\begin{lstlisting}
+		/* ------------------- Declaraciones ------------------------ */
+
+%option noyywrap
+%{
+#include <stdio.h>
+
+char * procesado;
+char * elem;
+int i = 0;
+int j = 0;
+int comparar = 0;
+char * comparacion;
+%}
+
+letra					[a-zA-Z]
+digito				[0-9]
+espacio				[ ]
+entero				\-?{digito}+
+numero				{entero}(\.{digito}+)?
+delimitador		"'"[^\t\n]+"'"
+cadena				"'"({letra}|{digito}|{espacio})*"'"
+variable			({letra}|{digito}|_)+
+crear					"crear "{variable}(" "({numero}|{cadena}|{espacio})+)?
+longitud			"longitud "{variable}
+imprimir			"imprimir "{variable}
+recorrer			"recorrer "{variable}(" "{delimitador})?
+insertar			"insertar "{variable}" "({cadena}|{numero})
+borrar				"borrar "{variable}" "({cadena}|{numero})
+obtener				"obtener "{variable}" "{entero}
+copiar				"copiar "{variable}" "{variable}
+concatenar		"concatenar "{variable}" "{variable}" "{variable}
+ordenar				"ordenar "{variable}" reves"?
+suma					{variable}" mas "{variable}(" mas "{variable})*
+operador			"igual"|"diferente"|"menor"|"menor igual"|"mayor"|"mayor igual"
+expresion			{longitud}|{suma}|{obtener}|{variable}|{ordenar}
+comparar			"comparar "{expresion}" "{operador}" "{expresion}
+
+%%
+
+{crear}		{procesado = yytext + 6;
+					char * lista = malloc(strlen(procesado));
+					elem = malloc(strlen(procesado) * 2);
+					for (i=0; i<strlen(procesado) && procesado[i] != ' '; i++)
+							lista[i] = procesado[i];
+							if (i < strlen(procesado)) {
+									procesado += i + 1;
+									j = 0;
+									int cambiar_espacio_coma = 0;
+									for (i = 0; i < strlen(procesado); i++) {
+											if (procesado[i] == ' ') {
+												if (cambiar_espacio_coma != 0) {
+													elem[j] = ',';
+													j++;
+													elem[j] = ' ';
+													j++;
+													cambiar_espacio_coma = 0;
+												}
+											} else {
+												elem[j] = procesado[i];
+												j++;
+												cambiar_espacio_coma = 1;
+											}
+									}
+							}
+							printf("%s = [%s]", lista, elem);}
+{longitud}		{procesado = yytext + 9;
+							if (comparar > 0)
+								comparar--;
+							printf("len(%s)", procesado);}
+{imprimir}		{procesado=yytext + 9; printf("print(%s)", procesado);}
+{recorrer}															{procesado = yytext + 9;
+																		char * lista = malloc(strlen(procesado));
+																		char * delim;
+																		int usar_delim = 0;
+																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		if (strlen(procesado) >= i + 1)
+																			usar_delim = 1;
+																		procesado += i + 1;
+																		delim = procesado;
+																		printf("for item in %s:\n    print(item", lista);
+																		if (usar_delim)
+																			printf(", end = %s", delim);
+																		printf(")");
+																	}
+{insertar}															{procesado = yytext + 9;
+																		char * lista = malloc(strlen(procesado));
+																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		procesado += i + 1;
+																		elem = procesado;
+																		printf("%s.append(%s)", lista, elem);}
+{borrar}															{procesado = yytext + 7;
+																		char *lista = malloc(strlen(procesado));
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		procesado += i + 1;
+																		elem = procesado;
+																		printf("%s.remove(%s)", lista, elem);}
+{obtener}															{procesado = yytext; procesado += 8;
+																		char *lista = malloc(strlen(procesado));
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		procesado += i + 1;
+																		elem = procesado;
+																		if(comparar > 0) {
+																			printf("%s[%s]", lista, elem);
+																			comparar--;
+																		}
+																		else
+																			printf("print(%s[%s])", lista, elem);}
+{copiar}															{procesado = yytext + 7;
+																		char *orig = malloc(strlen(procesado));
+																		char *dest = malloc(strlen(procesado));
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			orig[i] = procesado[i];
+																		procesado += i + 1;
+																		dest = procesado;
+																		printf("%s = %s", dest, orig);}
+{concatenar}														{procesado = yytext + 11;
+																		char *l1 = malloc(strlen(procesado));
+																		char *l2 = malloc(strlen(procesado));
+																		char *dest = malloc(strlen(procesado));
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			l1[i] = procesado[i];
+																		procesado += i + 1;
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			l2[i] = procesado[i];
+																		procesado += i + 1;
+																		dest = procesado;
+																		printf("%s = %s + %s", dest, l1, l2);}
+{ordenar}															{procesado = yytext + 8;
+																		char *lista = malloc(strlen(procesado));
+																		if (comparar > 0)
+																			comparar--;
+																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
+																			lista[i] = procesado[i];
+																		if (strlen(procesado) >= i + 1)
+																			printf("%s.sort(reverse=True)", lista);
+																		else
+																			printf("%s.sort()", lista);}
+{suma}																{procesado = yytext;
+																		char * suma = malloc(strlen(procesado));
+																		int salta_palabra = 0;
+																		j = 0;
+
+																		if (comparar > 0)
+																			comparar--;
+																		for(i = 0; i < strlen(procesado); i++) {
+																			if (procesado[i] == ' ') {
+																				salta_palabra = !salta_palabra & 0x1;
+																				if(salta_palabra) {
+																					suma[j] = ' ';
+																					j++;
+																					suma[j] = '+';
+																					j++;
+																					suma[j] = ' ';
+																					j++;
+																				}
+																			} else {
+																				if (!salta_palabra) {
+																					suma[j] = procesado[i];
+																					j++;
+																				}
+																			}
+																		}
+																		printf("%s", suma);}
+{comparar}															{comparar = 2; printf("comparacion = "); yyless(9);}
+{operador}															{procesado = yytext;
+																		i = 0;
+																		if(procesado[i] == 'i')
+																			printf(" == ");
+																		else if(procesado[i] == 'd')
+																			printf(" != ");
+																		else if(procesado[i] == 'm') {
+																			if(procesado[i+1] == 'e' && yyleng == 5)
+																				printf(" < ");
+																			else if(procesado[i+1] == 'e' && yyleng > 5)
+																				printf(" <= ");
+																			else if(procesado[i+1] == 'a' && yyleng == 5)
+																				printf(" > ");
+																			else
+																				printf(" >= ");}}
+{variable}															{if (comparar > 0)
+																			comparar--;
+																	printf("%s", yytext);}
+"mostrar comparacion"												{printf("print(comparacion)");}
+.																	{}
+
+%%
+
+int main(int argc, char *argv[]) {
+
+	if (argc == 2) {
+		yyin = fopen(argv[1], "rt");
+
+		if (yyin == NULL) {
+			printf("El fichero %s no se pudo abrir\n", argv[1]);
+			exit(-1);
+		}
+	} else
+		yyin = stdin;
+
+	yylex();
+
+	return 0;
+}
+		\end{lstlisting}
+		
+		Cabe mencionar que a la hora de crear una lista, si se deciden insertart cadenas de caracteres, por la forma
+		en la que está hecho el código, éstas no pueden contener espacios, ya que si no serían sustituidas por espacios.
+		Cuando se inserten de otra forma sí que pueden contenerlos.
+		
+		\subsubsection{Pruebas}
+		Para probar el funcionamiento del programa, vamos a pasarle un fichero de texto que contiene expresiones en
+		lenguaje natural que deberán ser convertidas a Python. Aquí se puede ver un ejemplo de la salida obtenida:
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{../img/ejemplo.png}
+		\end{figure}
+		
+		Para comprobar que funciona, vamos a redirigir la salida a un fichero con extensión .py y vamos a probar
+		a ejecutarlo con Python. Se puede ver el resultado en la siguiente imagen:
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\textwidth]{../img/ejemplo-python.png}
+		\end{figure}
 	\newpage
 	\subsection{Práctica 3}
 	
