@@ -1,0 +1,37 @@
+comparar l1 igual l2
+comparar l1 diferente l2
+comparar l1 menor l2
+comparar l1 menor igual l2
+comparar l1 mayor l2
+comparar l1 mayor igual l2
+comparar longitud l1 igual longitud l2
+comparar longitud l1 diferente longitud l2
+comparar longitud l1 menor longitud l2
+comparar longitud l1 menor igual longitud l2
+comparar longitud l1 mayor longitud l2
+comparar longitud l1 mayor igual longitud l2
+comparar l1 mas l2 igual l2 mas l1
+comparar l1 mas l2 diferente l2 mas l1
+comparar l1 mas l2 menor l2 mas l1
+comparar l1 mas l2 menor igual l2 mas l1
+comparar l1 mas l2 mayor l2 mas l1
+comparar l1 mas l2 mayor igual l2 mas l1
+comparar obtener l1 10 igual obtener l2 10
+comparar obtener l1 10 diferente obtener l2 10
+comparar obtener l1 10 menor obtener l2 10
+comparar obtener l1 10 menor igual obtener l2 10
+comparar obtener l1 10 mayor obtener l2 10
+obtener l1 1
+obtener l2 10
+obtener l3 -4
+comparar obtener l1 10 mayor igual obtener l2 10
+comparar ordenar l1 reves igual ordenar l2 reves
+comparar ordenar l1 reves diferente ordenar l2 reves
+comparar ordenar l1 reves menor ordenar l2 reves
+comparar ordenar l1 reves menor igual ordenar l2 reves
+comparar ordenar l1 reves mayor ordenar l2 reves
+comparar ordenar l1 reves mayor igual ordenar l2 reves
+comparar ordenar l1 reves menor igual l1 mas l2
+comparar l1 igual longitud l2
+comparar l1 mas l2 menor igual obtener l3 4
+comparar l1 mayor l1 mas l2 mas l3

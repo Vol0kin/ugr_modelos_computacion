@@ -1,0 +1,35 @@
+crear lista1 'esto' 'es'      'la'    'primera'                'lista'
+crear lista2
+copiar lista1 lista2
+imprimir lista1
+recorrer lista1
+recorrer lista2 '_'
+comparar lista1 igual lista2
+mostrar comparacion
+crear lista3 1 2 3 4
+crear lista4 4 3 2 1
+concatenar lista3 lista4 lista_larga
+ordenar lista_larga reves
+recorrer lista_larga '\n'
+comparar lista3 menor lista4
+mostrar comparacion
+comparar lista3 diferente lista4
+mostrar comparacion
+comparar lista3 igual ordenar lista4
+mostrar comparacion
+longitud lista_larga
+crear lista5 5 6
+comparar lista3 mas lista5 igual lista4 mas lista5 mas lista_larga
+mostrar comparacion
+comparar longitud lista1 igual longitud lista2
+mostrar comparacion
+comparar obtener lista1 0 diferente obtener lista2 2
+mostrar comparacion
+obtener lista_larga -1
+crear lista_nueva
+insertar lista_nueva 1.1
+insertar lista_nueva -123.45
+insertar lista_nueva 15
+imprimir lista_nueva
+borrar lista_nueva 15
+imprimir lista_nueva
