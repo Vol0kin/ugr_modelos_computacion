@@ -503,123 +503,121 @@ comparar			"comparar "{expresion}" "{operador}" "{expresion}
 								comparar--;
 							printf("len(%s)", procesado);}
 {imprimir}		{procesado=yytext + 9; printf("print(%s)", procesado);}
-{recorrer}															{procesado = yytext + 9;
-																		char * lista = malloc(strlen(procesado));
-																		char * delim;
-																		int usar_delim = 0;
-																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
-																			lista[i] = procesado[i];
-																		if (strlen(procesado) >= i + 1)
-																			usar_delim = 1;
-																		procesado += i + 1;
-																		delim = procesado;
-																		printf("for item in %s:\n    print(item", lista);
-																		if (usar_delim)
-																			printf(", end = %s", delim);
-																		printf(")");
-																	}
-{insertar}															{procesado = yytext + 9;
-																		char * lista = malloc(strlen(procesado));
-																		for (i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
-																			lista[i] = procesado[i];
-																		procesado += i + 1;
-																		elem = procesado;
-																		printf("%s.append(%s)", lista, elem);}
-{borrar}															{procesado = yytext + 7;
-																		char *lista = malloc(strlen(procesado));
-																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
-																			lista[i] = procesado[i];
-																		procesado += i + 1;
-																		elem = procesado;
-																		printf("%s.remove(%s)", lista, elem);}
-{obtener}															{procesado = yytext; procesado += 8;
-																		char *lista = malloc(strlen(procesado));
-																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
-																			lista[i] = procesado[i];
-																		procesado += i + 1;
-																		elem = procesado;
-																		if(comparar > 0) {
-																			printf("%s[%s]", lista, elem);
-																			comparar--;
-																		}
-																		else
-																			printf("print(%s[%s])", lista, elem);}
-{copiar}															{procesado = yytext + 7;
-																		char *orig = malloc(strlen(procesado));
-																		char *dest = malloc(strlen(procesado));
-																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
-																			orig[i] = procesado[i];
-																		procesado += i + 1;
-																		dest = procesado;
-																		printf("%s = %s", dest, orig);}
-{concatenar}														{procesado = yytext + 11;
-																		char *l1 = malloc(strlen(procesado));
-																		char *l2 = malloc(strlen(procesado));
-																		char *dest = malloc(strlen(procesado));
-																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
-																			l1[i] = procesado[i];
-																		procesado += i + 1;
-																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
-																			l2[i] = procesado[i];
-																		procesado += i + 1;
-																		dest = procesado;
-																		printf("%s = %s + %s", dest, l1, l2);}
-{ordenar}															{procesado = yytext + 8;
-																		char *lista = malloc(strlen(procesado));
-																		if (comparar > 0)
-																			comparar--;
-																		for(i = 0; i < strlen(procesado) && procesado[i] != ' '; i++)
-																			lista[i] = procesado[i];
-																		if (strlen(procesado) >= i + 1)
-																			printf("%s.sort(reverse=True)", lista);
-																		else
-																			printf("%s.sort()", lista);}
-{suma}																{procesado = yytext;
-																		char * suma = malloc(strlen(procesado));
-																		int salta_palabra = 0;
-																		j = 0;
-
-																		if (comparar > 0)
-																			comparar--;
-																		for(i = 0; i < strlen(procesado); i++) {
-																			if (procesado[i] == ' ') {
-																				salta_palabra = !salta_palabra & 0x1;
-																				if(salta_palabra) {
-																					suma[j] = ' ';
-																					j++;
-																					suma[j] = '+';
-																					j++;
-																					suma[j] = ' ';
-																					j++;
-																				}
-																			} else {
-																				if (!salta_palabra) {
-																					suma[j] = procesado[i];
-																					j++;
-																				}
-																			}
-																		}
-																		printf("%s", suma);}
-{comparar}															{comparar = 2; printf("comparacion = "); yyless(9);}
-{operador}															{procesado = yytext;
-																		i = 0;
-																		if(procesado[i] == 'i')
-																			printf(" == ");
-																		else if(procesado[i] == 'd')
-																			printf(" != ");
-																		else if(procesado[i] == 'm') {
-																			if(procesado[i+1] == 'e' && yyleng == 5)
-																				printf(" < ");
-																			else if(procesado[i+1] == 'e' && yyleng > 5)
-																				printf(" <= ");
-																			else if(procesado[i+1] == 'a' && yyleng == 5)
-																				printf(" > ");
-																			else
-																				printf(" >= ");}}
-{variable}															{if (comparar > 0)
-																			comparar--;
-																	printf("%s", yytext);}
-"mostrar comparacion"												{printf("print(comparacion)");}
+{recorrer}		{procesado = yytext + 9;
+							char * lista = malloc(strlen(procesado));
+							char * delim;
+							int usar_delim = 0;
+							for(i=0; i<strlen(procesado) && procesado[i]!=' '; i++)
+								lista[i] = procesado[i];
+							if (strlen(procesado) >= i + 1)
+								usar_delim = 1;
+							procesado += i + 1;
+							delim = procesado;
+							printf("for item in %s:\n    print(item", lista);
+							if (usar_delim)
+								printf(", end = %s", delim);
+							printf(")");}
+{insertar}		{procesado = yytext + 9;
+							char * lista = malloc(strlen(procesado));
+							for(i=0; i<strlen(procesado) && procesado[i]!=' '; i++)
+								lista[i] = procesado[i];
+							procesado += i + 1;
+							elem = procesado;
+							printf("%s.append(%s)", lista, elem);}
+{borrar}			{procesado = yytext + 7;
+							char *lista = malloc(strlen(procesado));
+							for(i=0; i<strlen(procesado) && procesado[i]!=' '; i++)
+								lista[i] = procesado[i];
+							procesado += i + 1;
+							elem = procesado;
+							printf("%s.remove(%s)", lista, elem);}
+{obtener}			{procesado = yytext; procesado += 8;
+							char *lista = malloc(strlen(procesado));
+							for(i=0; i<strlen(procesado) && procesado[i]!=' '; i++)
+								lista[i] = procesado[i];
+							procesado += i + 1;
+							elem = procesado;
+							if(comparar > 0) {
+								printf("%s[%s]", lista, elem);
+								comparar--;
+							}
+							else
+								printf("print(%s[%s])", lista, elem);}
+{copiar}			{procesado = yytext + 7;
+							char *orig = malloc(strlen(procesado));
+							char *dest = malloc(strlen(procesado));
+							for(i=0; i<strlen(procesado) && procesado[i]!=' '; i++)
+								orig[i] = procesado[i];
+							procesado += i + 1;
+							dest = procesado;
+							printf("%s = %s", dest, orig);}
+{concatenar}	{procesado = yytext + 11;
+							char *l1 = malloc(strlen(procesado));
+							char *l2 = malloc(strlen(procesado));
+							char *dest = malloc(strlen(procesado));
+							for(i=0; i<strlen(procesado) && procesado[i]!=' '; i++)
+								l1[i] = procesado[i];
+							procesado += i + 1;
+							for(i=0; i<strlen(procesado) && procesado[i]!=' '; i++)
+								l2[i] = procesado[i];
+							procesado += i + 1;
+							dest = procesado;
+							printf("%s = %s + %s", dest, l1, l2);}
+{ordenar}			{procesado = yytext + 8;
+							char *lista = malloc(strlen(procesado));
+							if (comparar > 0)
+								comparar--;
+							for(i=0; i<strlen(procesado) && procesado[i]!=' '; i++)
+								lista[i] = procesado[i];
+							if (strlen(procesado) >= i + 1)
+								printf("%s.sort(reverse=True)", lista);
+							else
+								printf("%s.sort()", lista);}
+{suma}				{procesado = yytext;
+							char * suma = malloc(strlen(procesado));
+							int salta_palabra = 0;
+							j = 0;
+							if (comparar > 0)
+								comparar--;
+							for(i=0; i<strlen(procesado); i++) {
+								if (procesado[i] == ' ') {
+									salta_palabra = !salta_palabra & 0x1;
+										if(salta_palabra) {
+											suma[j] = ' ';
+											j++;
+											suma[j] = '+';
+											j++;
+											suma[j] = ' ';
+											j++;
+										}
+								} else {
+									if (!salta_palabra) {
+										suma[j] = procesado[i];
+										j++;
+									}
+								}
+							}
+							printf("%s", suma);}
+{comparar}		{comparar = 2; printf("comparacion = "); yyless(9);}
+{operador}		{procesado = yytext;
+							i = 0;
+							if(procesado[i] == 'i')
+								printf(" == ");
+							else if(procesado[i] == 'd')
+								printf(" != ");
+							else if(procesado[i] == 'm') {
+								if(procesado[i+1] == 'e' && yyleng == 5)
+									printf(" < ");
+								else if(procesado[i+1] == 'e' && yyleng > 5)
+									printf(" <= ");
+								else if(procesado[i+1] == 'a' && yyleng == 5)
+									printf(" > ");
+								else
+									printf(" >= ");}}
+{variable}		{if (comparar > 0) 
+								comparar--;
+							printf("%s", yytext);}
+"mostrar comparacion"	{printf("print(comparacion)");}
 .																	{}
 
 %%
