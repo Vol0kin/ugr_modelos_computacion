@@ -6,8 +6,9 @@
 \usepackage{tikz}
 \usepackage{makecell}
 \usepackage{float}
-\usepackage{enumitem}
+\usepackage[shortlabels]{enumitem}	% Para enumeraciones con letras
 \usepackage[textwidth=390pt]{geometry}
+
 
 %Códigos fuente
 \usepackage{listings}
@@ -660,9 +661,56 @@ int main(int argc, char *argv[]) {
 			\centering
 			\includegraphics[width=\textwidth]{../img/ejemplo-python.png}
 		\end{figure}
+		
 	\newpage
 	\subsection{Práctica 3}
 	
+		\subsubsection{Ejercicio 1}
+		\enu. En el alfabeto $\lbrace x, y \rbrace$, construir un AFD que acepte cada uno de los siguientes 
+		lenguajes:
+		
+		\begin{enumerate}[a)]
+			\item El lenguaje de las palabras que contienen la subcadena $yxy$.
+			\item El lenguaje de las palabras que comienzan o terminan en $xyx$ (o ambas cosas).
+			\item El lenguaje $L \subseteq \lbrace x, y \rbrace ^*$ que acepta aquellas palabras con un número impar
+			de ocurrencias de la subcadena $xy$.
+		\end{enumerate}
+		
+		\sol \par
+		
+		\subsubsection{Ejercicio 2}
+		\enu. En el alfabeto  $\lbrace 0, 1 \rbrace$, construir un AFND que acepte cada uno de los siguientes
+		lenguajes:
+		
+		\begin{enumerate}[a)]
+			\item El lenguaje de las palabras que empiezan en 1 y terminan en 010.
+			\item El lenguaje de las palabras que empiezan o terminan (o ambas cosas) en 101.
+			\item El lenguaje de las palabras que contienen, simultáneamente, las subcadenas 0101 y 100.
+			El AFDN también acepta las cadenas en las que las subcadenas están solapadas (por ejemplo, ``10100” y
+			``100101” serían palabras aceptadas).
+		\end{enumerate}
+		
+		\sol \par
+		
+		\subsubsection{Ejercicio 3}
+		\enu. Calcular una máquina de Mealy o Moore que codifique el complemento a dos de un número en binario. \par
+		\textbf{\underline{Nota}}: \textit{El complemento a dos se realiza cambiando ceros por unos y unos por ceros, y
+		luego, al resultado, sumándole uno en binario.} \par
+		\textbf{\underline{Nota 2}}: \textit{El complemento a dos es la forma en que se calcula el entero opuesto a uno
+		dado para la representación binaria de los enteros con signo en C++.} \par
+		
+		\sol \par
+		
+		\subsubsection{Ejercicio 4}
+		\enu. Diseñar una Máquina de Mealy o de Moore que, dada una cadena usando el alfabeto $A = \lbrace a, w, o
+		\rbrace$, encienda un led verde (salida $V$) cada vez que se detecte la cadena ``$woow$" en la entrada,
+		apagándolo cuando lea cualquier otro símbolo después de esta cadena (representamos el led apagado con la
+		salida ``$X$"). El autómata tiene que encender el led verde (salida $V$), tantas veces como aparezca en la
+		secuencia ``$woow$" en la entrada, y esta secuencia puede estar solapada \par
+	
+		\sol \par
+		
+		
 	\newpage
 	\subsection{Práctica 4}
 	
