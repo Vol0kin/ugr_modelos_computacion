@@ -691,7 +691,9 @@ int main(int argc, char *argv[]) {
 		\end{enumerate}
 		
 		\sol \par
-		a) El autómata quedaría de la siguiente forma:
+		a) Definimos como Autómata Finito Determinista a la quintupla $M = (Q, A, q_0, \delta, F)$, donde $Q$ es
+		el conjunto de estados, $A$ el alfabeto de entrada, $q_0$ el estado inicial, $\delta$ el conjunto de funciones
+		de transición y $F$ el estado final. El autómata quedaría de la siguiente forma:
 		
 		\begin{center}
 			\begin{tikzpicture}
@@ -722,10 +724,12 @@ int main(int argc, char *argv[]) {
 			el último elemento de la cadena a aceptar y pasa al estado $q_3$.
 			\item $q_3$ representa el estado final, al que se llega una vez que se han encontrado todos los símbolos
 			consecutivos de la cadena. Se permanece en este estado le llegue lo que le llegue, ya que se ha encontrado
-			la cadena que se buscaba.
+			la cadena que se buscaba. Si se llega a este estado, se acepta la cadena de entrada.
 		\end{itemize}
 		
-		b) El autómata quedaría de la siguiente forma:
+		b) Definimos como Autómata Finito Determinista a la quintupla $M = (Q, A, q_0, \delta, F)$, donde $Q$ es
+		el conjunto de estados, $A$ el alfabeto de entrada, $q_0$ el estado inicial, $\delta$ el conjunto de funciones
+		de transición y $F$ el estado final. El autómata quedaría de la siguiente forma:
 		
 		\begin{center}
 			\begin{tikzpicture}
@@ -755,7 +759,57 @@ int main(int argc, char *argv[]) {
 			\end{tikzpicture}
 		\end{center}
 		
-		c) El autómata quedaría de la siguiente forma:
+		Antes de explicar lo que representa cada estado, hace falta clarificar algunas ideas sobre el autómata.
+		La parte de arriba del autómata representa el autómata capaz de aceptar las palabras que contienen la cadena
+		$xyx$ al principio, mientras que la parte de abajo del autómata es la que es capaz de aceptar las palabras que
+		contienen la cadena anterior al final de la palabra. Se aceptará una palabra si el autómata se encuentra en
+		el estado $q_3$ o en el $q_7$ tras leer todos los símbolos de entrada. \par
+		
+		Una vez dicho esto, se 	va a proceder con la explicación:
+		
+		\begin{itemize}
+			\item $q_0$ es el estado inicial. De aquí se pueden dar dos situaciones. La primera es que le llegue una
+			$x$, lo cuál podría representar que la cadena $xyx$ se encuentra al principio de la palabra, y entonces
+			se pasaría al estado $q_1$. En caso de que llegue una $y$, se descarta que la cadena se encuentre al
+			principio de la palabra y se pasa al estado $q_4$ para intentar comprobar que se encuentra al final
+			de la palabra.
+			\item $q_1$ representa que ha llegado la primera $x$ y que se está comprobando que la cadena esté al
+			principio. En caso de que le llegue una $y$ se pasará al estado $q_2$, esperando por tanto a que le llegue
+			el último elemento. En caso de que le llegue una $x$, significa que la cadena a buscar no se pudo encontrar 
+			al principio de la palabra y por tanto se intentará buscar al final de ésta. Por tanto, se pasará al estado
+			$q_5$, simbolizando que ha llegado la primera $x$ que puede estar al final de la palabra.
+			\item $q_2$ representa que han llegado los símbolos $xy$ al principio de la cadena y está esperando a que
+			llegue la última $x$. En caso de que esto ocurra, se pasará al estado $q_3$. En caso de que llegue una $y$
+			significaría que se está interrumpiendo la cadena al inicio y por tanto se pasaría al estado $q_4$,
+			indicando que se intentará comprobar que la cadena está al final de la palabra, y que todavía no ha llegado
+			el primer elemento de ésta.
+			\item $q_3$ es un estado final que indica que se ha encontrado la cadena $xyx$ al principio de la palabra,
+			y que por tanto se acepta la palabra. Ya que se ha cumplido la restricción, el autómata permanecerá en este
+			estado sin importar que símbolo le venga de entrada.
+			\item $q_4$ indica que, o bien el primer símbolo no ha sido una $x$ o que la cadena $xyx$ que se buscaba
+			al principio o al final ha sido interrumpida con una $y$ (por ejemplo con la cadena $xyy$), y que por tanto 
+			aun no ha llegado el primer elemento de la cadena a buscar. El autómata permanecerá en este estado mientras
+			le siga llegando el símbolo $y$, y pasará al estado $q_5$ en cuanto le llegue una $x$, que simboliza el
+			primer 	elemento de la cadena.
+			\item $q_5$ representa un estado en el que se está buscando la cadena $xyx$ al final de la palabra y que
+			ha llegado el primer elemento, bien porque la cadena había sido interrumpida por una $y$, como se ha
+			mencionado en el estado anterior, o bien porque al principio ha llegado una cadena del tipo $xx$. Mientras
+			le sigan llegando $x$, el autómata permanecerá en este estado, ya que este es el primer elemento de la
+			cadena. Pasará a $q_6$ en cuánto le llegue el símbolo $y$.
+			\item $q_6$ simboliza que se está buscando la cadena al final de la palabra y que de momento han llegado
+			los símbolos $xy$. Si le llega el símbolo $y$, entonces se interrumpe la cadena, y se pasa al estado $q_4$.
+			En caso de que llegue una $x$, el autómata pasará al estado $q_7$.
+			\item $q_7$ representa es un estado final que indica que se ha encontrado la cadena $xyx$ al final de una
+			palabra, probablemente. El autómata se quedará en este estado, y por tanto aceptará la palabra en el caso
+			de que no le llegue ningún símbolo más. En caso de que le llegue una $x$, pasará al estado $q_5$,
+			indicando que ha llegado el primer elemento de la cadena de nuevo. En caso de que le llegue una $y$,
+			pasará al estado $q_6$, indicando que de momento lleva la cadena $xY$. Esto se debe a que anteriormente
+			le llegó el símbolo $x$, con lo cuál, ahora con una $y$, lleva dos elementos de la cadena.
+		\end{itemize}				
+		
+		c) Definimos como Autómata Finito Determinista a la quintupla $M = (Q, A, q_0, \delta, F)$, donde $Q$ es
+		el conjunto de estados, $A$ el alfabeto de entrada, $q_0$ el estado inicial, $\delta$ el conjunto de funciones
+		de transición y $F$ el estado final. El autómata quedaría de la siguiente forma:
 		
 		\begin{center}
 			\begin{tikzpicture}
