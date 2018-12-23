@@ -816,7 +816,7 @@ int main(int argc, char *argv[]) {
 				\node[state, initial] (q0) {$q_0$};
 				\node[state, right of=q0] (q1) {$q_1$};
 				\node[state, accepting, right of=q1] (q2) {$q_2$};
-				\node[state, right of=q2] (q3)  {$q_3$};
+				\node[state, accepting, right of=q2] (q3)  {$q_3$};
 				\node[state, right of=q3] (q4) {$q_4$};
 				\draw	(q0) edge[loop above] node{$y$} (q0)
 						(q0) edge[above] node{$x$} (q1)
@@ -843,6 +843,30 @@ int main(int argc, char *argv[]) {
 			El AFDN también acepta las cadenas en las que las subcadenas están solapadas (por ejemplo, ``10100” y
 			``100101” serían palabras aceptadas).
 		\end{enumerate}
+		
+		Se va ahora a comentar cada estado:
+		
+		\begin{itemize}
+			\item $q_0$ representa el estado inicial. El autómata se mantendrá en este estado mientras le sigan
+			llegando símbolos $y$. Pasará al siguiente estado, $q_1$ cuando le llegue el símbolo $x$, el 	cuál forma
+			parte de la cadena $xy$ a buscar.
+			\item $q_1$ representa ha llegado el símbolo $x$ de la cadena $xy$. Se mantendrá en este estado
+			mientras le sigan llegando síbolos $x$, ya que este sigue siendo el primer elemento de la cadena.
+			Pasará al siguiente estado, $q_2$, en cuanto le llegue el símbolo $y$.
+			\item $q_2$ es el primer estado final del autómata. Indica que se ha procesado la palabra y que se han
+			encontrado un número impar de cadenas $xy$. Mientras le lleguen símbolos $y$, permanecerá en este estado.
+			Por tanto, si el autómata está en este estado y no le llegan nuevos símbolos, o le siguen llegando $y$,
+			aceptará la palabra.
+			\item $q_3$ es el segundo estado final. Representa la situación en la que ha llegado un número de cadenas
+			$xy$ impares y que ha llegado una nueva $x$, la cuál puede llegar a convertirse en una nueva cadena $xy$,
+			haciendo que el número de éstas sea par. No obstante, como todavía no ha llegado un símbolo $y$, es un
+			estado final, ya que como se mencionó anteriormente han llegado un número impar de cadenas $xy$. Por tanto,
+			si el autómata se encuentra en este estado al finalizar de procesar la palabra, la aceptará. Se mantendrá
+			en este estado mientras le sigan llegando símbolos $x$, y pasará al estado $q_4$ si le llega un símbolo $y$.
+			\item $q_4$ es un estado que representa que han llegado un número par de cadenas $xy$. Si le llega un
+			símbolo $y$ pasará al estado $q_0$. Si le llega una $x$, pasará al estado $q_1$, ya que se ha obtenido el
+			primer símbolo de una potencial cadena $xy$.
+		\end{itemize}
 		
 		\sol \par
 		
