@@ -831,19 +831,6 @@ int main(int argc, char *argv[]) {
 			\end{tikzpicture}
 		\end{center}
 		
-		
-		\subsubsection{Ejercicio 2}
-		\enu. En el alfabeto  $\lbrace 0, 1 \rbrace$, construir un AFND que acepte cada uno de los siguientes
-		lenguajes:
-		
-		\begin{enumerate}[a)]
-			\item El lenguaje de las palabras que empiezan en 1 y terminan en 010.
-			\item El lenguaje de las palabras que empiezan o terminan (o ambas cosas) en 101.
-			\item El lenguaje de las palabras que contienen, simultáneamente, las subcadenas 0101 y 100.
-			El AFDN también acepta las cadenas en las que las subcadenas están solapadas (por ejemplo, ``10100” y
-			``100101” serían palabras aceptadas).
-		\end{enumerate}
-		
 		Se va ahora a comentar cada estado:
 		
 		\begin{itemize}
@@ -867,6 +854,19 @@ int main(int argc, char *argv[]) {
 			símbolo $y$ pasará al estado $q_0$. Si le llega una $x$, pasará al estado $q_1$, ya que se ha obtenido el
 			primer símbolo de una potencial cadena $xy$.
 		\end{itemize}
+		
+		
+		\subsubsection{Ejercicio 2}
+		\enu. En el alfabeto  $\lbrace 0, 1 \rbrace$, construir un AFND que acepte cada uno de los siguientes
+		lenguajes:
+		
+		\begin{enumerate}[a)]
+			\item El lenguaje de las palabras que empiezan en 1 y terminan en 010.
+			\item El lenguaje de las palabras que empiezan o terminan (o ambas cosas) en 101.
+			\item El lenguaje de las palabras que contienen, simultáneamente, las subcadenas 0101 y 100.
+			El AFDN también acepta las cadenas en las que las subcadenas están solapadas (por ejemplo, ``10100” y
+			``100101” serían palabras aceptadas).
+		\end{enumerate}
 		
 		\sol \par
 		
