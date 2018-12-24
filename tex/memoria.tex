@@ -975,9 +975,9 @@ int main(int argc, char *argv[]) {
 						(q0) edge[above] node{1} (q1)
 						(q1) edge[above] node{0} (q2)
 						(q2) edge[above] node{1} (q3)
-						(q3) edge[loop above] node{0, 1} (q3)
+						(q3) edge[loop above] node{$0, 1$} (q3)
 						(r0) edge[above] node{$\varepsilon$} (p0)
-						(p0) edge[loop above] node{0, 1} (p0)
+						(p0) edge[loop above] node{$0, 1$} (p0)
 						(p0) edge[above] node{1} (p1)
 						(p1) edge[above] node{0} (p2)
 						(p2) edge[above] node{1} (p3);
@@ -1005,12 +1005,12 @@ int main(int argc, char *argv[]) {
 				\node[state, right of=q1] (q2) {$q_2$};
 				\node[state, right of=q2] (q3) {$q_3$};
 				\node[state, accepting, right of=q3] (q4) {$q_4$};
-				\draw	(q0) edge[loop above] node{0, 1} (q0)
+				\draw	(q0) edge[loop above] node{$0, 1$} (q0)
 						(q0) edge[above] node{0} (q1)
 						(q1) edge[above] node{1} (q2)
 						(q2) edge[above] node{0} (q3)
 						(q3) edge[above] node{1} (q4)
-						(q4) edge[loop above] node{0, 1} (q4);
+						(q4) edge[loop above] node{$0, 1$} (q4);
 			\end{tikzpicture}
 		\end{center}
 		
@@ -1026,11 +1026,11 @@ int main(int argc, char *argv[]) {
 				\node[state, right of=p0] (p1) {$p_1$};
 				\node[state, right of=p1] (p2) {$p_2$};
 				\node[state, accepting, right of=p2] (p3) {$p_3$};
-				\draw	(p0) edge[loop above] node{0, 1} (p0)
+				\draw	(p0) edge[loop above] node{$0, 1$} (p0)
 						(p0) edge[above] node{1} (p1)
 						(p1) edge[above] node{0} (p2)
 						(p2) edge[above] node{0} (p3)
-						(p3) edge[loop above] node{0, 1} (p3);
+						(p3) edge[loop above] node{$0, 1$} (p3);
 			\end{tikzpicture}
 		\end{center}
 		
@@ -1072,14 +1072,14 @@ int main(int argc, char *argv[]) {
 						(q2) edge[left] node{0} (q3)
 						(q3) edge[left] node{1} (q4)
 						(q4) edge[left] node{$\varepsilon$} (p0)
-						(p0) edge[loop right] node{0, 1} (p0)
+						(p0) edge[loop right] node{$0, 1$} (p0)
 						(p0) edge[left] node{1} (p1)
 						(p1) edge[left] node{0} (p2)
 						(p2) edge[left] node{0} (p3)
-						(p3) edge[loop right] node{0, 1} (p3)
+						(p3) edge[loop right] node{$0, 1$} (p3)
 						(q4) edge[bend right, left] node{$\varepsilon$} (p1)
 						(r0) edge[above] node{$\varepsilon$} (p4)
-						(p4) edge[loop right] node{0, 1} (p4)
+						(p4) edge[loop right] node{$0, 1$} (p4)
 						(p4) edge[right] node{1} (p5)
 						(p5) edge[right] node{0} (p6)
 						(p6) edge[right] node{0} (p7)
@@ -1089,7 +1089,7 @@ int main(int argc, char *argv[]) {
 						(q6) edge[right] node{1} (q7)
 						(q7) edge[right] node{0} (q8)
 						(q8) edge[right] node{1} (q9)
-						(q9) edge[loop right] node{0, 1} (q9)
+						(q9) edge[loop right] node{$0, 1$} (q9)
 						(p7) edge[bend right, left] node{$\varepsilon$} (q6);
 			\end{tikzpicture}
 		\end{center}
@@ -1110,6 +1110,40 @@ int main(int argc, char *argv[]) {
 		
 		\sol \par
 		
+		Se va a construir una máqiona de Mealy que permita calcular el complemento a dos de un número binario. En esta
+		máquina, las salidas correspondientes a las entradas se indican en las transiciones en vez de en los estados en
+		sí. \par
+		
+		El resultado sería el siguiente:
+		
+		\begin{center}
+			\begin{tikzpicture}
+				\node[state, initial] (q0) {$q_0$};
+				\node[state, right of=q0] (q1) {$q_1$};
+				\draw	(q0) edge[loop above] node{$0/0$} (q0)
+						(q0) edge[above] node{$1/1$} (q1)
+						(q1) edge[loop above] node{$0/1, 1/0$} (q1);
+			\end{tikzpicture}
+		\end{center}
+		
+		El comportamiento del autómata sería el siguiente:
+		
+		\begin{itemize}
+			\item Si el primer elemento de entrada es un 0, y mientras le sigan llegando símbolos 0, el autómata imprimirá
+			el símbolo 0. Esto se debe a que al dígito más a la derecha se le suma un 1 en el complemento a 2. Por tanto,
+			si el complemento a 1 de 0 es 1, y al sumarle el 1 del complemento a 2, su valor pasa a ser 0, y se tiene un 1 de
+			acarreo, el cuál se sumará al siguiente símbolo de entrada. Si vuelve a entrar un 0, se obtiene un 1 del
+			complemento a 1 y se le suma el acarreo, produciendo un 0 de nuevo con acarreo, y así sucesivamente. En el
+			autómata esto se representa con el estado $q_0$ y la transición que sale y entra hacia él.
+			\item Si el primer símbolo es 1, o llega el primer 1 de la cadena, se le hace su complemento a 1, el cuál es 0,
+			y se le suma un 1 si es el primer elemento de entrada o si han llegado anteriormente símbolos 0 y se ha producido
+			acarreo, resultando por tanto en 1. En este caso, no se produciría acarreo, y los símbolos que vengan a
+			continuación tendrán su valor inverso. Esto se representa con la transición de $q_0$ a $q_1$.
+			\item Una vez que ya no hay acarreo y sigan llegando símbolos de entrada, se imprimirá el valor contrario al de
+			entrada. Por ejemplo, si llega un 0 se imprimirá un 1, y si llega un 1, un 0. Esto se representa con la transición
+			que entra y sale de $q_1$.
+		\end{itemize}						
+		
 		\subsubsection{Ejercicio 4}
 		\enu. Diseñar una Máquina de Mealy o de Moore que, dada una cadena usando el alfabeto $A = \lbrace a, w, o
 		\rbrace$, encienda un led verde (salida $V$) cada vez que se detecte la cadena ``$woow$" en la entrada,
@@ -1119,6 +1153,51 @@ int main(int argc, char *argv[]) {
 	
 		\sol \par
 		
+		Se plantea una máquina de Mealy como solución al problema dado, la cuál tiene la siguiente forma:
+		
+		\begin{center}
+			\begin{tikzpicture}
+				\node[state, initial] (q0) {$q_0$};
+				\node[state, right of=q0] (q1) {$q_1$};
+				\node[state, right of=q1] (q2) {$q_2$};
+				\node[state, right of=q2] (q3) {$q_3$};
+				\node[state, right of=q3] (q4) {$q_4$};
+				\draw	(q0) edge[loop above] node{$o/X, a/X$} (q0)
+						(q0) edge[bend left, above] node{$w/X$} (q1)
+						(q1) edge[bend left, below] node{$a/X$} (q0)
+						(q1) edge[loop above] node{$w/X$} (q1)
+						(q1) edge[above] node{$o/X$} (q2)
+						(q2) edge[above] node{$o/X$} (q3)
+						(q3) edge[above] node{$w/V$} (q4)
+						
+						(q2) edge[bend left=50, below] node{$w/X, a/X$} (q0)
+						(q3) edge[bend left=65, below] node{$o/X, a/X$} (q0)
+						(q4) edge[bend left=75, below] node{$a/X$} (q0)
+						(q4) edge[bend right=45, above] node{$w/X$} (q1)
+						(q4) edge[bend right, above] node{$o/X$} (q2);
+			\end{tikzpicture}		
+		\end{center}
+		
+		A continuación se va a explicar brevemente el funcionamiento de la máquina:
+		
+		\begin{itemize}
+			\item $q_0$ es el estado inicial y al que transicionan todos los estados cuando les llega un símbolo que no
+			esperaban. Representa además un estado en el que todavía no ha llegado ningún elemento de la cadena ``$woow$".
+			\item $q_1$ representa el estado siguiente de $q_0$, en el cuál le llega la primera $w$. Mientras le sigan
+			llegando $w$ permanecerá en este estado, ya que sigue siendo el primer elemento de la cadena. Cuando le llegue
+			una $o$ pasará al siguiente estado.
+			\item $q_2$ representa que ha llegado la primera $o$, y si le llega cualquier otro elemento que no sea otra
+			$o$, vuelve al estado $q_0$. En caso de que le llegue, pasa al siguiente estado.
+			\item $q_3$ representa un estado en el que han llegado las dos $o$ y está esperando una $w$ para pasar al
+			siguiente estado y encender finalmente el led de color verde. En caso de llegarle otro símbolo, volverá al 
+			estado $q_0$.
+			\item $q_4$ representa que han llegado todos los elementos de la cadena ``$woow$" y que se ha encendido el led
+			verde (mediante la transición $w/X$ para pasar de $q_3$ a $q_4$). Desde aquí, como se pueden solapar las
+			cadenas, pueden darse distintas situaciones. La primera es que le llegue una $a$, pasando por tanto al estado
+			$q_0$. Si le llega una $w$, significa que puede llegar una nueva cadena ``$woow$" sin solapar, y por tanto pasará
+			al estado $q_1$, simbolizando que ha llegado la primera $w$. En caso de llegarle una $o$, significa que
+			posiblemente la cadena se solape, pasando por tanto al estado $q_2$, indicando que ha llegado la primera $o$.
+		\end{itemize}
 		
 	\newpage
 	\subsection{Práctica 4}
