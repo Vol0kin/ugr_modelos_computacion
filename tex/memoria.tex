@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{graphicx}
+\usepackage{amssymb}				% Símbolos de números
 \usepackage[hidelinks]{hyperref}	% Con hidelinks no se muestran los recuadros rojos
 \usepackage{tikz}
 \usetikzlibrary{automata, positioning, arrows}
@@ -1202,6 +1203,65 @@ int main(int argc, char *argv[]) {
 	\newpage
 	\subsection{Práctica 4}
 	
+		\subsubsection{Ejercicio 1}
+		\enu. Dado el siguiente autómata responde a las siguientes cuestiones razonadamente:
+		
+		\begin{enumerate}[a)]
+			\item ¿Habría alguna forma de optimizar el autómata para que reduciendo su complejidad siga aceptado exactamente
+			el mismo lenguaje?
+			\item ¿Se podría obtener la gramática que genera este lenguaje en la Forma Normal de Chomsky? En caso afirmativo,
+			proporcionar dicha gramática en FNC. En caso contrario, justificar.
+		\end{enumerate}
+		
+		\begin{center}
+			\begin{tikzpicture}
+			\node[state, initial, accepting] (q0) {$q_0$};
+			\node[state, accepting, above right of=q0] (q1) {$q_1$};
+			\node[state, accepting, right of=q1] (q2) {$q_2$};
+			\node[state, accepting, below right of=q0] (q3) {$q_3$};
+			\node[state, below right of=q2] (q4) {$q_4$};
+			\node[state, right of=q3] (q5) {$q_5$};
+			\draw	(q0) edge[above] node{$0$} (q1)
+					(q0) edge[above] node{$1$} (q3)
+					(q1) edge[loop above] node{$0$} (q1)
+					(q1) edge[bend left, above] node{$1$} (q2)
+					(q2) edge[bend left, above] node{$0$} (q1)
+					(q2) edge[above] node{$1$} (q4)
+					(q3) edge[left] node{$0$} (q1)
+					(q3) edge[bend right=90, below] node{$1$} (q4)
+					(q4) edge[in=75, out=105, loop, above] node{$0, 1$} (q4)
+					(q5) edge[left] node{$0$} (q2)
+					(q5) edge[above] node{$1$} (q4)					
+					;
+			\end{tikzpicture}
+		\end{center}
+		
+		\sol \par
+		
+		\subsubsection{Ejercicio 2}
+		\enu. Observando las siguientes gramáticas, determinar cuáles de ellas son ambiguas y, en su caso, comprobar si los
+		lenguajes generados son inherentemente ambiguos. Justificar la respuesta.
+		
+		\begin{enumerate}[a)]
+			\item $S \rightarrow AbB, \; A \rightarrow aA \; | \; \varepsilon, \; B \rightarrow aB \; | \; bB \; | \;
+			\varepsilon$
+			\item $S \rightarrow abaS \; | \; babS  \; | \; baS \; | \; \varepsilon$
+			\item $S \rightarrow aSA \; | \; \varepsilon, \; A \rightarrow bA \; | \; \varepsilon$
+		\end{enumerate}
+		
+		\textit{\underline{Nota}: Explicar y demostrar cuidadosamente si la gramática no es ambigua (con lenguaje natural).}
+		
+		\sol \par
+		
+		
+		\subsubsection{Ejercicio 3}
+		\enu. Encontrar el autómata que acepte el siguiente lenguaje $L$.
+		
+		\[L = \lbrace 0^i 1^j 0^k 1 | i + k = j; \; i, j, k \in \mathbb{N} \rbrace\]
+		
+		Una vez diseñado el autómata, calcular la gramática libre de contexto que acepta $L$ eliminando posibles producciones
+		inútiles que hayan ido apareciendo durante el proceso. 
+		
 	\newpage
 	\section{Ejercicios voluntarios}
 \end{document}
