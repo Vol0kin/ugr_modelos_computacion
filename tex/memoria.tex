@@ -1238,6 +1238,66 @@ int main(int argc, char *argv[]) {
 		
 		\sol \par
 		
+		a) Para intentar optimizar el autómata y reducir su complejidad se puede aplicar el algoritmo de minimización. En
+		caso de obtener el mismo autómata después de intentar minimizarlo, significaría que ya se estaría delante de un
+		autómata minimal, y que por tanto no se puede simplificar más. \par
+		
+		Para empezar, se van a eliminar todos los estados inaccesibles, es decir, aquellos a los que no se pueda llegar
+		desde ningún otro estado. \par
+		
+		Como se puede observar claramente, el estado $q_5$ es inaccesible, ya que no se puede llegar hasta él de ninguna
+		forma. Dicho de otra manera, no existe ninguna transición que lleve cualquier estado a $q_5$. Por tanto se eliminaría,
+		y el resultado sería el siguiente:
+		
+		\begin{center}
+			\begin{tikzpicture}
+			\node[state, initial, accepting] (q0) {$q_0$};
+			\node[state, accepting, above right of=q0] (q1) {$q_1$};
+			\node[state, accepting, right of=q1] (q2) {$q_2$};
+			\node[state, accepting, below right of=q0] (q3) {$q_3$};
+			\node[state, right of=q3] (q4) {$q_4$};
+			\draw	(q0) edge[above] node{$0$} (q1)
+					(q0) edge[above] node{$1$} (q3)
+					(q1) edge[loop above] node{$0$} (q1)
+					(q1) edge[bend left, above] node{$1$} (q2)
+					(q2) edge[bend left, above] node{$0$} (q1)
+					(q2) edge[right] node{$1$} (q4)
+					(q3) edge[left] node{$0$} (q1)
+					(q3) edge[below] node{$1$} (q4)
+					(q4) edge[in=-30, out=30, loop, right] node{$0, 1$} (q4)				
+					;
+			\end{tikzpicture}
+		\end{center}
+		
+		Una vez eliminados los estados inaccesibles se puede aplicar el algoritmo de minimización. Con este algoritmo se
+		intentan reducir el número de estados, dejando solo aquellos que son distinguibles entre sí. Dos estados son
+		distinguibles si, para un mismo símbolo de entrada, se llegan a dos estados diferentes (es decir, que uno sea final
+		y el otro no, por ejemplo). Si dos estados son distinguibles, significia que los estados padres también lo serán, ya
+		que los hijos se pueden distinguir. Con esto se busca reducir el número de estados, combinando aquellas parejas que son
+		indistinguibles en un solo estado.
+		\par
+		
+		Para ello, se va a construir una tabla triangular y se van a marcar con una cruz las casillas en las que la pareja
+		de estados sea distinguible. Se hará una primera iteración, en la que se marcarán aquellas parejas distinguibles sin
+		que les entre ningún símbolo de entrada. Es decir, aquellas en las que uno de los estados sea final y el otro no. \par
+		
+		El resultado de esta primera iteración es el siguiente:
+		
+		\begin{center}
+			\begin{tabular}{*{7}{c|}}
+											\cline{2-2}
+				1 & 						\\ \cline{2-3}
+				2 & &						\\ \cline{2-4}
+				3 & & &						\\ \cline{2-5}
+				4 & X & X & X & X					\\ \cline{2-5}
+				\multicolumn{0}{c}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2}
+				& \multicolumn{1}{c}{3}
+			\end{tabular}
+		\end{center}
+		
+		Como se puede observar, el estado $q_4$ es distinguible a todos los otros porque es el único que no es final. Los
+		demás, de momento, son indistinguibles, así que se irán comprobando por partes. \par
+		
 		\subsubsection{Ejercicio 2}
 		\enu. Observando las siguientes gramáticas, determinar cuáles de ellas son ambiguas y, en su caso, comprobar si los
 		lenguajes generados son inherentemente ambiguos. Justificar la respuesta.
@@ -1260,7 +1320,9 @@ int main(int argc, char *argv[]) {
 		\[L = \lbrace 0^i 1^j 0^k 1 | i + k = j; \; i, j, k \in \mathbb{N} \rbrace\]
 		
 		Una vez diseñado el autómata, calcular la gramática libre de contexto que acepta $L$ eliminando posibles producciones
-		inútiles que hayan ido apareciendo durante el proceso. 
+		inútiles que hayan ido apareciendo durante el proceso. \par
+		
+		\sol \par
 		
 	\newpage
 	\section{Ejercicios voluntarios}
