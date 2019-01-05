@@ -5,7 +5,7 @@
 \usepackage{amssymb}				% Símbolos de números
 \usepackage[hidelinks]{hyperref}	% Con hidelinks no se muestran los recuadros rojos
 \usepackage{tikz}
-\usetikzlibrary{automata, positioning, arrows}
+\usetikzlibrary{automata, positioning, arrows, trees}
 
 % Ajustar tikzet
 \tikzset{
@@ -1285,18 +1285,162 @@ int main(int argc, char *argv[]) {
 		
 		\begin{center}
 			\begin{tabular}{*{7}{c|}}
-											\cline{2-2}
-				1 & 						\\ \cline{2-3}
-				2 & &						\\ \cline{2-4}
-				3 & & &						\\ \cline{2-5}
-				4 & X & X & X & X					\\ \cline{2-5}
+																							\cline{2-2}
+				1 & 																		\\ \cline{2-3}
+				2 & &																		\\ \cline{2-4}
+				3 & & &																		\\ \cline{2-5}
+				4 & \color{blue}{X} & \color{blue}{X} & \color{blue}{X} & \color{blue}{X}	\\ \cline{2-5}
 				\multicolumn{0}{c}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2}
 				& \multicolumn{1}{c}{3}
 			\end{tabular}
 		\end{center}
 		
-		Como se puede observar, el estado $q_4$ es distinguible a todos los otros porque es el único que no es final. Los
-		demás, de momento, son indistinguibles, así que se irán comprobando por partes. \par
+		Como se puede observar, el estado $q_4$ es distinguible de todos los otros porque es el único que no es final. Los
+		demás, de momento, son indistinguibles, así que se irán comprobando por partes a medida que se itere. El criterio
+		a seguir ahora para determinar si dos estados son distinguibles es comprobar, según el símbolo de entrada, hacia
+		donde transiciona cada pareja. En caso de llegar con cualquiera de los símbolos de entrada del lenguaje a una pareja
+		de estados distinguibles, entonces se marcará en la tabla que esa pareja también lo es. En caso de ir a una pareja
+		de estados que todavía no se ha marcado, se guardará la pareja y, si al comprobar la pareja a la que llegan se
+		determina que esos valores son distinguibles, entonces también se marcará a la pareja original como distinguible.
+		En caso contrario, no se hará nada. Este proceso, como se puede ver, determina recursivamente las parejas que son
+		distinguibles, reduciendo por tanto el número de iteraciones que se tienen que hacer. \par
+		
+		A continuación, se van a comprobar las parejas formadas por el estado $q_3$ con los estados $q_0$, $q_1$ y $q_2$, ya
+		que todavía no se ha determinado si son distinguibles estas parejas. Para eso, se van a construir tablas que permitan
+		ver hacia donde se transiciona con las entradas. Se marcarán en rojo aquellas transiciones que ya sean distinguibles
+		para facilitar el seguimiento del algoritmo. Luego se mostrará el resultado en la tabla donde se minimiza. \par
+		
+		Este es el resultado para las parejas mencionadas anteriormente:
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tabular}{c|cc}
+				& 0 & 1		\\ \hline
+				0 & 1 & \color{red}{3}	\\
+				3 & 1 & \color{red}{4}	\\ \hline
+				1 & 1 & \color{red}{2}	\\ 
+				3 & 1 & \color{red}{4}	\\ \hline
+				2 & 1 & 4	\\
+				3 & 1 & 4	\\ \hline				
+			\end{tabular}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tabular}{*{7}{c|}}
+																							\cline{2-2}
+				1 & 																		\\ \cline{2-3}
+				2 & &																		\\ \cline{2-4}
+				3 & \color{red}{X} & \color{red}{X} &										\\ \cline{2-5}
+				4 & \color{blue}{X} & \color{blue}{X} & \color{blue}{X} & \color{blue}{X}	\\ \cline{2-5}
+				\multicolumn{0}{c}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2}
+				& \multicolumn{1}{c}{3}
+			\end{tabular}
+		\end{figure}
+		
+		Como se puede comprobar, solo la pareja $\lbrace q_2, q_3 \rbrace$ ha quedado sin marcar, y tampoco parece llegar
+		a ningún estado que pueda ser comprobado más adelante. Con lo cuál, como a medida que se itere no se volverá atrás,
+		se puede decir de momento que la pareja $\lbrace q_2, q_3 \rbrace$ es indistinguible. \par
+		
+		Ahora se procederá a comprobar el estado $q_2$ con los estados $q_0$ y $q_1$. El resultado es el siguiente:
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tabular}{c|cc}
+				& 0 & 1		\\ \hline
+				0 & 1 & \color{red}{3}	\\
+				2 & 1 & \color{red}{4}	\\ \hline
+				1 & 1 & \color{red}{2}	\\ 
+				2 & 1 & \color{red}{4}	\\ \hline				
+			\end{tabular}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tabular}{*{7}{c|}}
+																							\cline{2-2}
+				1 & 																		\\ \cline{2-3}
+				2 & \color{red}{X} & \color{red}{X}											\\ \cline{2-4}
+				3 & \color{red}{X} & \color{red}{X} &										\\ \cline{2-5}
+				4 & \color{blue}{X} & \color{blue}{X} & \color{blue}{X} & \color{blue}{X}	\\ \cline{2-5}
+				\multicolumn{0}{c}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2}
+				& \multicolumn{1}{c}{3}
+			\end{tabular}
+		\end{figure}
+		
+		Aquí se puede ver que todas las parejas de estados posibles son distinguibles con $q_2$, por tanto se han marcado
+		las casillas que corresponden en la tabla. \par
+		
+		Para finalizar se va a comprobar la pareja formada por los estados $q_0$ y $q_1$. El resultado es el siguiente:
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tabular}{c|cc}
+				& 0 & 1		\\ \hline
+				0 & 1 & 3	\\
+				1 & 1 & 2	\\ \hline				
+			\end{tabular}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tabular}{*{7}{c|}}
+																							\cline{2-2}
+				1 & 																		\\ \cline{2-3}
+				2 & \color{red}{X} & \color{red}{X}											\\ \cline{2-4}
+				3 & \color{red}{X} & \color{red}{X} &										\\ \cline{2-5}
+				4 & \color{blue}{X} & \color{blue}{X} & \color{blue}{X} & \color{blue}{X}	\\ \cline{2-5}
+				\multicolumn{0}{c}{} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2}
+				& \multicolumn{1}{c}{3}
+			\end{tabular}
+		\end{figure}
+		
+		Después de esta última iteración se ha concluído que la pareja de estados $\{q_0, q_1\}$ también son indistinguibles,
+		ya que no conducen a ningún estado distinguible. \par
+		
+		Por tanto, se puede afirmar que las parejas de estados $\{q_0, q_1\}$ y $\{q_2, q_3\}$ son indistinguibles. Esto
+		implica que los dos estados se pueden juntar en uno nuevo, conservando las transiciones de ambos estados. \par
+		
+		Para finalizar, se va a crear el nuevo autómata, el cuál es mínimo y el más simple posible, con las agrupaciones
+		de estados correspondientes. El resultado sería el siguiente:
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}
+			\node[state, initial, accepting] (q01) {$\{q_0, q_1\}$};
+			\node[state, accepting, right of=q01] (q23) {$\{q_2, q_3\}$};
+			\node[state, below of=q23] (q4) {$q_4$};
+			\draw	(q01) edge[loop above] node{$0$} (q01)
+					(q01) edge[bend left, above] node{$1$} (q23)
+					(q23) edge[bend left, below] node{$0$} (q01)
+					(q23) edge[right] node{$1$} (q4)
+					(q4) edge[loop right] node{$0, 1$} (q4)				
+					;
+			\end{tikzpicture}
+		\end{figure}
+		
+		b) Lo primero que se va a hacer es pasar el AFD anterior a gramática. Definimos gramática como la cuádrupla $G = (V,
+		T, P, S)$, donde $V$ son las variables, $T$ los símbolos terminales, $P$ el conjunto de reglas de producción y $S$
+		el estado inicial. Para facilitar el trabajo se va a nombrar al estado $\{q_0, q_1\}$ como $S$, al $\{q_2, q_3\}$
+		como $A$ y al estado $q_4$ como $B$. Por tanto, la gramática sería la siguiente:
+		
+		\[V = \{S, A, B\}\]
+		\[T = \{0, 1\}\]
+		\[P = \{A \rightarrow 0A \; | \; 1B \; | \; \varepsilon, \; B \rightarrow 0A \; | \; 1C \; | \; \varepsilon, \;
+				C \rightarrow 0C \; | \; 1C\} \]
+		\[S = \{ S \} \]
+		
+		La Forma Normal de Chomsky tiene las reglas de producción de la forma $A \rightarrow BC$ y $A \rightarrow a$. Como
+		se puede ver, nuestra gramática se encuentra lejos de eso. \par
+		
+		El primer paso consiste en eliminar todas las producciones nulas. Al transformar nuestras reglas de producción,
+		eliminando las producciones nulas y sustituyéndolas por los símbolos terminales correspondientes, se obtienen las
+		siguientes reglas de producción:
+		
+		\[P = \{A \rightarrow 0A \; | \; 1B \; | \; 0 \; | \; 1, \; B \rightarrow 0A \; | \; 1C \; | \; 0 \; | \; 1, \;
+				C \rightarrow 0C \; | \; 1C\} \]
+		
+		Como se puede ver, ahora nuestra gramática no contiene producciones nulas
 		
 		\subsubsection{Ejercicio 2}
 		\enu. Observando las siguientes gramáticas, determinar cuáles de ellas son ambiguas y, en su caso, comprobar si los
@@ -1313,6 +1457,120 @@ int main(int argc, char *argv[]) {
 		
 		\sol \par
 		
+		a) La gramática no es ambigua. En un principio puede parecerlo ya que al principio, con la regla $S \rightarrow AbB$
+		se crea un árbol que puede crecer tanto por la derecha como por la izquierda. Sin embargo, el resto de reglas obligan
+		a crecer esas ramas obligatoriamente hacia la derecha. Aunque en un principio eso no llega a salvar a la gramática de
+		ser ambigua, en este caso no se produce ninguna ambigüedad. Esto se puede ver de la siguiente forma:
+		
+		\begin{itemize}
+			\item En la parte derecha de la palabra habrá una sucesión de 0 o más símbolos $a$. Como los símbolos se van
+			poniendo uno detrás de otro hasta que se inserte el símbolo vacío, solo hay camino único para un número dado
+			de símbolos $a$.
+			\item Entre las dos partes que pueden crecer del árbol siempre habrá un símbolo $b$.
+			\item En la parte izquierda habrá 0 o más símbolos $a$ y $b$, entremezclados o no. La forma en la que va creciendo
+			esta parte del árbol permite seguir un camino único para cada posible combinación de símbolos $a$ y $b$ que se
+			genere, con lo cuál no es posible obtener dos árboles distintos para una misma sucesión de símbolos.
+		\end{itemize}
+		
+		Al demostrar que la gramática no es ambigua, se puede decir también que el lenguaje no es inherentemente ambigua, ya
+		que existe al menos una gramática no ambigua para éste.
+		
+		b)
+		
+		c) La gramática es ambigua, ya que se puede obtener la cadena $aab$ con dos árboles distintos, los cuáles son:
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[ -, xscale=0.8,
+								level 1/.style={sibling distance=12em},
+								level 2/.style={sibling distance=6em},
+								level 3/.style={sibling distance=3em},
+								level 4/.style={sibling distance=2em}]
+				\node (S1) {$S$}
+					child{
+						node (a1) {$a$}
+					}
+					child{
+						node (S2) {$S$}
+						child { node (a2) {$a$} }
+						child{
+							node (S3) {$S$}
+							child{ node (e1) {$\varepsilon$} }
+						}
+						child {
+							node (A2) {$A$}
+							child { node (b) {$b$} }
+							child {
+								node (A3) {$A$}
+								child { node (e3) {$\varepsilon$} }
+							}
+						}
+					}
+					child {
+						node (A1) {$A$}
+						child { node (e2) {$\varepsilon$} }
+					}					
+					;
+			\end{tikzpicture}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[ -, xscale=0.8,
+								level 1/.style={sibling distance=12em},
+								level 2/.style={sibling distance=6em},
+								level 3/.style={sibling distance=3em},
+								level 4/.style={sibling distance=2em}]
+				\node (S1) {$S$}
+					child{
+						node (a1) {$a$}
+					}
+					child{
+						node (S2) {$S$}
+						child { node (a2) {$a$} }
+						child{
+							node (S3) {$S$}
+							child{ node (e1) {$\varepsilon$} }
+						}
+						child {
+							node (A2) {$A$}
+							child { node (e3) {$\varepsilon$} }
+						}
+					}
+					child {
+						node (A1) {$A$}
+						child { node (b) {$b$} }
+						child {
+							node (A3) {$A$}
+							child { node (e3) {$\varepsilon$} }
+						}
+					}					
+					;
+			\end{tikzpicture}
+		\end{figure}
+		
+		Como se puede ver claramente, al haber dos árboles para una misma palabra, la gramática pasa a ser ambigua. \par
+		
+		Para demostrar que el lenguaje no es inherentemente ambiguo se va a buscar una gramática que no lo sea. Para poder
+		encontrarla más fácilmente, vamos a buscar un patrón en la gramática. \par
+		
+		Parece ser que la gramática genera o bien la palabra vacía, o bien uno o más símbolos $a$ seguidos de cero o más
+		símbolos $b$. \par
+		
+		Por tanto, definimos la nueva gramática como una cuádrupla $G = (V, T, P, S)$, donde $V$ son las variables, $T$ los
+		símbolos terminales, $P$ el conjunto de reglas de producción y $S$ el estado inicial. Los conjuntos serían los
+		siguientes:
+		
+		\[V = \{S, A, B \}\]
+		\[T = \{a, b\}\]
+		\[P = \{S \rightarrow aA \; | \; \varepsilon, \; A \rightarrow aA \; | \; bB \; | \; \varepsilon, \;
+				B \rightarrow bB \; | \; \varepsilon \}\]
+		\[S = \{S\}\]
+		
+		Como se puede comprobar, esta gramática no es ambigua, ya que permite generar primero o la palabra vacía o un símbolo
+		$a$. Después se pueden generar tantos símbolos $a$ como se quieran y si se desea se pueden generar después tantos
+		símbolos $b$ como se desee. \par
+		
+		Al haber encontrado una gramática no ambigua, se ha demostrado que el lenguaje no es inherentemente ambiguo.
 		
 		\subsubsection{Ejercicio 3}
 		\enu. Encontrar el autómata que acepte el siguiente lenguaje $L$.
