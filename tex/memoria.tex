@@ -1426,21 +1426,45 @@ int main(int argc, char *argv[]) {
 		
 		\[V = \{S, A, B\}\]
 		\[T = \{0, 1\}\]
-		\[P = \{A \rightarrow 0A \; | \; 1B \; | \; \varepsilon, \; B \rightarrow 0A \; | \; 1C \; | \; \varepsilon, \;
-				C \rightarrow 0C \; | \; 1C\} \]
+		\[P = \{S \rightarrow 0S \; | \; 1A \; | \; \varepsilon, \; A \rightarrow 0S \; | \; 1B \; | \; \varepsilon, \;
+				B \rightarrow 0B \; | \; 1B\} \]
 		\[S = \{ S \} \]
 		
-		La Forma Normal de Chomsky tiene las reglas de producción de la forma $A \rightarrow BC$ y $A \rightarrow a$. Como
-		se puede ver, nuestra gramática se encuentra lejos de eso. \par
+		La Forma Normal de Chomsky tiene las reglas de producción de la forma $A \rightarrow BC$ y $A \rightarrow a$, donde
+		$A, B, C \in V$ y $a \in T$. Como se puede ver, nuestra gramática se encuentra lejos de eso. \par
 		
-		El primer paso consiste en eliminar todas las producciones nulas. Al transformar nuestras reglas de producción,
-		eliminando las producciones nulas y sustituyéndolas por los símbolos terminales correspondientes, se obtienen las
-		siguientes reglas de producción:
+		El primer paso consiste en limpiar la gramática de producciones inútiles, es decir, de las variables que no produzcan
+		un símbolo terminal y de aquellas variables inalcanzables. Al limpiar la gramática anterior, obtenemos la siguiente:
 		
-		\[P = \{A \rightarrow 0A \; | \; 1B \; | \; 0 \; | \; 1, \; B \rightarrow 0A \; | \; 1C \; | \; 0 \; | \; 1, \;
-				C \rightarrow 0C \; | \; 1C\} \]
+		\[V = \{S, A\}\]
+		\[T = \{0, 1\}\]
+		\[P = \{S \rightarrow 0S \; | \; 1A \; | \; \varepsilon, \; A \rightarrow 0S \; | \; \varepsilon\} \]
+		\[S = \{ S \} \]	
 		
-		Como se puede ver, ahora nuestra gramática no contiene producciones nulas
+		Como se puede ver, la variable $B$ ha sido eliminada, ya que no producía ningún símbolo terminal. \par
+		
+		Una vez limpiada la gramática, el siguiente paso consiste en eliminar las producciones nulas y sustituirlas por
+		los símbolos terminales que correspondan. Las reglas de producción, una vez aplicado este paso, quedarían de la
+		siguiente forma:
+		
+		\[P = \{S \rightarrow 0S \; | \; 1A \; | \; 0 \; | \; 1, \; A \rightarrow 0S \; | \; 0\} \]
+		
+		Como se puede ver, ahora nuestra gramática no contiene producciones nulas, y se puede pasar al paso final, que
+		consiste en dejar todas las producciones de la forma $A \rightarrow BC$ y $A \rightarrow a$, donde $A, B, C \in V$
+		y $a \in T$. Una vez aplicado el proceso de transformación de la gramática, obtenemos la siguiente gramática, la
+		cuál ya está en la Forma Normal de Chomsky:
+		
+		\[V = \{S, A, X, Y\}\]
+		\[T = \{0, 1\}\]
+		\[P = \{X \rightarrow 0, \; Y \rightarrow 1, \; S \rightarrow XS \; | \; YA \; | \; 0 \; | \; 1, \;
+				A \rightarrow XS \; | \; 0\} \]
+		\[S = \{ S \} \]
+		
+		Como se puede comprobar fácilmente, todas las producciones siguen las condiciones descritas anteriormente. El proceso
+		para llegar hasta esta gramática ha consistido en sustituir en las reglas de producción los símbolos terminales que
+		iban acompañados por una variable por otra variable (cambiar $0$ y $1$ por $X$ e $Y$, respectivamente). Esa variable
+		luego se sustituye por el símbolo terminal correspondiente. Si una regla producía un símbolo terminal, no se ha
+		cambiado el símbolo por la nueva variable, solo en los casos en los que va acompañado de otra variable.
 		
 		\subsubsection{Ejercicio 2}
 		\enu. Observando las siguientes gramáticas, determinar cuáles de ellas son ambiguas y, en su caso, comprobar si los
